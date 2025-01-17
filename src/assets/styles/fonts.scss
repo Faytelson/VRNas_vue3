@@ -1,0 +1,39 @@
+@font-face {
+    font-family: 'Chakra Petch';
+    src: local('ChakraPetch-Light'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-Light.woff') format('woff'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Chakra Petch';
+    src: local('ChakraPetch-Regular'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-Regular.woff') format('woff'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Chakra Petch';
+    src: local('ChakraPetch-Medium'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-Medium.woff') format('woff'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Chakra Petch';
+    src: local('ChakraPetch-SemiBold'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-SemiBold.woff') format('woff'),
+    url('@/assets/fonts/chakra_petch/ChakraPetch-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
