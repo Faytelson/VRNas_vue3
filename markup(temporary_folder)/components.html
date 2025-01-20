@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- component header -->
+    <header class="header">
+      <a href="#" class="header__logo">
+        <img src="" alt="Логотип компании VRNas" class="header__logo-img" />
+      </a>
+
+      <div class="header__burger">
+        <!-- component burger -->
+        <button class="burger"></button>
+      </div>
+
+      <nav class="header__nav">
+        <menu class="header__menu">
+          <li><a href="#">Home</a></li>
+          <li>
+            <span>About us</span>
+            <ul>
+              <li><a href="#">Sublist Item</a></li>
+            </ul>
+          </li>
+        </menu>
+        <div class="header__button">
+          <!-- component button button_secondary -->
+          <a href="#" class="button button_secondary">Contact us</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- component title title_main -->
+    <h1 class="title title_main">Immerse Yourself in Virtual Reality</h1>
+    <h3 class="title title_section-name">About us</h3>
+    <h2 class="title title_description">
+      Bring your events to life like never before with our VR services.
+    </h2>
+
+    <!-- component button button_main -->
+    <a href="#" class="button button_main">read more</a>
+
+    <!-- component 3d-box -->
+    <div class="3d-box"><img src="" alt="" class="about__3d-img" /></div>
+
+    <!-- component animated-links -->
+    <div class="animated-links">
+      <ul class="animated-links__list">
+        <li class="animated-links__list-item">
+          <a href="#" class="animated-links__link">
+            <img src="" alt="" class="animated-links__item-img" />
+          </a>
+        </li>
+      </ul>
+      <!-- component 2d-box -->
+      <div class="2d-box"></div>
+    </div>
+
+    <!-- component 2d-box -->
+    <div class="2d-box"></div>
+
+    <!-- vuetify accordion -->
+    <v-expansion-panels>
+      <v-expansion-panel
+        title="Passionate and Experienced Team"
+        text="We are proud of our team of VR experts who are passionate about VR and dedicated to delivering the highest quality work. Our team consists of experienced VR developers, designers, and technicians who have a proven track record of creating immersive and engaging VR experiences."
+      >
+      </v-expansion-panel>
+    </v-expansion-panels>
+
+    <!-- component promo-card? -->
+    <div class="promo-card">
+      <h5 class="promo-card__title">Start from</h5>
+      <span class="promo-card__price">$99</span>
+      <span class="promo-card__price-label">/ month</span>
+      <p class="promo-card__description">
+        All the basic features to boost your freelance career
+      </p>
+      <ul class="promo-card__list">
+        <li class="promo-card__list-item">
+          Access to a selection of VR games and experiences
+        </li>
+      </ul>
+      <div class="promo-card__button">
+        <!-- button button_main component -->
+      </div>
+      <p class="promo-card__footer">30 Days Moneyback Guarantee</p>
+    </div>
+
+    <!-- vuetify carousel -->
+    <v-carousel>
+      <v-carousel-item
+        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+        cover
+      >
+        <h4 class="slide__title">Popular Article</h4>
+        <div class="slide__info-container">
+          <img src="" alt="" class="slide__img" />
+          <p class="slide__label">VR Games</p>
+          <h5 class="slide__title">
+            Entertainment Goes Virtual: The Rise of VR Gaming
+          </h5>
+          <a href="#" class="slide__link"></a>
+        </div>
+      </v-carousel-item>
+    </v-carousel>
+
+    <!-- component article card -->
+    <div class="articles__item-container">
+      <!-- привести в порядок нейминг в list-..., чтобы был одинаковым -->
+      <img class="articles__list-item-img" src="" alt="" />
+      <p class="articles__list-label">VR Education</p>
+      <p class="articles__item-description">
+        The Future of Education: How VR is Revolutionizing the Classroom
+      </p>
+      <!-- !!!!!!! hide this link if mobile -->
+      <a href="" class="articles__item-link"></a>
+    </div>
+
+    <!-- subscribe-panel component -->
+    <div class="subscribe-panel">
+      <h3 class="subscribe-panel__title">
+        Subscribe to our newsletter for latest updates
+      </h3>
+      <form action="" class="subscribe-panel__form">
+        <!-- доделать форму -->
+      </form>
+    </div>
+
+    <!-- conponent footer -->
+    <footer class="footer">
+      <!-- додумать структуру и название -->
+      <div class="footer__columns">
+        <div class="footer__column">
+          <a href="#" class="footer__logo">
+            <img src="" alt="" class="footer__logo-img" />
+          </a>
+          <div class="footer__socials">
+            <!-- socials component -->
+            <ul class="socials">
+              <li class="socials__item">
+                <a href="#" class="socials__link">
+                  <img src="" alt="" class="socials__img" />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer__column">
+          <h3 class="footer__column-title">Quicklinks</h3>
+          <menu class="footer__menu">
+            <li class="footer__menu-item">
+              <a href="#" class="footer__menu-link">Home</a>
+            </li>
+          </menu>
+        </div>
+      </div>
+      <p class="footer__copyright-info">
+        © Copyright 2023, All Rights Reserved
+      </p>
+    </footer>
+
+    <!-- component breadcrumbs -->
+    <ul class="breadcrumbs">
+      <li class="breadcrumbs__item">
+        <a href="" class="breadcrumbs__link">Home</a>
+      </li>
+    </ul>
+
+    <!-- component page-intro -->
+    <header class="page-intro">
+      <div class="page-intro__title">
+        <h1 class="title title_main">About Us</h1>
+      </div>
+      <div class="page-intro__breadcrumbs">
+        <!-- component breadcrumbs -->
+        <ul class="breadcrumbs">
+          <li class="breadcrumbs__item">
+            <a href="" class="breadcrumbs__link">Home</a>
+          </li>
+        </ul>
+      </div>
+    </header>
+
+    <!-- component section-intro -->
+    <header class="section-intro">
+      <div class="section-intro__section-name">
+        <h3 class="title title_section-name">about us</h3>
+      </div>
+      <div class="section-intro__section-about">
+        <h2 class="title title_section-about">
+          Bring your events to life like never before with our VR services.
+        </h2>
+      </div>
+    </header>
+
+    <!-- component feature-list-panel -->
+    <ul class="feature-list-panel">
+      <li class="feature-list-panel__item">
+        <img src="" alt="" class="feature-list-panel__img" />
+        <h3 class="feature-list-panel__title">Expertise</h3>
+        <p class="feature-list-panel__description">
+          Our team consists of experienced VR developers, designers, and
+          technicians who have a passion for VR and a commitment to delivering
+          quality work and give the best service
+        </p>
+      </li>
+    </ul>
+
+    <!-- component gallery -->
+    <ul class="gallery">
+      <li class="gallery__item">
+        <img src="" alt="" class="gallery__img" />
+        <p class="gallery__title">Bondan Prabowo</p>
+        <p class="gallery__subtitle">CEO</p>
+      </li>
+    </ul>
+    <!-- сделать компонент или миксин для контейнеров с одинаковыми стилями? -->
+  </body>
+</html>
