@@ -109,7 +109,7 @@
       </v-carousel-item>
     </v-carousel>
 
-    <!-- component article card -->
+    <!-- component article-card -->
     <div class="articles__item-container">
       <!-- привести в порядок нейминг в list-..., чтобы был одинаковым -->
       <img class="articles__list-item-img" src="" alt="" />
@@ -198,16 +198,31 @@
       </div>
     </header>
 
-    <!-- component feature-list-panel -->
-    <ul class="feature-list-panel">
-      <li class="feature-list-panel__item">
-        <img src="" alt="" class="feature-list-panel__img" />
-        <h3 class="feature-list-panel__title">Expertise</h3>
-        <p class="feature-list-panel__description">
+    <!-- component feature-list -->
+    <ul class="feature-list">
+      <li class="feature-list__item">
+        <img src="" alt="" class="feature-list__item-img" />
+        <h3 class="feature-list__item-title">Expertise</h3>
+        <p class="feature-list__item-description">
           Our team consists of experienced VR developers, designers, and
           technicians who have a passion for VR and a commitment to delivering
           quality work and give the best service
         </p>
+      </li>
+    </ul>
+
+    <!-- component navigator-list-panel -->
+    <ul class="navigator-list-panel">
+      <li class="navigator-list-panel__item">
+        <a href="#" class="service__item-link">
+          <img src="" alt="" class="navigator-list-panel__item-img" />
+          <h3 class="navigator-list-panel__item-title">VR Development</h3>
+          <p class="navigator-list-panel__item-description">
+            From concept to creation, our team of VR developers will bring your
+            vision to life.
+          </p>
+          <span class="navigator-list-panel__link-label">learn more</span>
+        </a>
       </li>
     </ul>
 
@@ -217,6 +232,80 @@
         <img src="" alt="" class="gallery__img" />
         <p class="gallery__title">Bondan Prabowo</p>
         <p class="gallery__subtitle">CEO</p>
+      </li>
+    </ul>
+
+    <!-- component details-list -->
+    <ul class="details-list">
+      <li class="details-list__item">
+        <p class="details-list__item-title">happy clients</p>
+        <p class="details-list__item-description">123k+</p>
+      </li>
+    </ul>
+
+    <!-- component price-section -->
+    <section class="price-section">
+      <div class="price-section__intro">
+        <!-- component page_intro -->
+        <p class="price-section__description">
+          At VRNas, we believe that everyone should have access to the benefits
+          of VR. That's why we offer a range of price-section options to meet
+          the needs of any budget.
+        </p>
+      </div>
+      <div class="price-section__panel">
+        <div class="price-section__list">
+          <!-- component titled-list -->
+          <ul class="titled-list">
+            <li class="titled-list__list-item">
+              <h5 class="titled-list__item-title">Customizable Packages</h5>
+              <p class="titled-list__item-text">
+                We understand that each project is unique, so we offer
+                customizable packages to ensure that you get the services you
+                need at a price that works for you. Our team will work with you
+                to create a package that meets your specific goals and budget.
+              </p>
+            </li>
+          </ul>
+        </div>
+        <div class="price-section__promo-card">
+          <!-- component promo-card -->
+          <div class="promo-card">
+            <h5 class="promo-card__title">Start from</h5>
+            <span class="promo-card__price">$99</span>
+            <span class="promo-card__price-label">/ month</span>
+            <p class="promo-card__description">
+              All the basic features to boost your freelance career
+            </p>
+            <ul class="promo-card__list">
+              <li class="promo-card__list-item">
+                Access to a selection of VR games and experiences
+              </li>
+            </ul>
+            <div class="promo-card__button">
+              <!-- button button_main component -->
+            </div>
+            <p class="promo-card__footer">30 Days Moneyback Guarantee</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- component animated-features -->
+    <ul class="animated-features">
+      <li class="animated-features__item">
+        <img src="" alt="" class="animated-features__item-img" />
+        <div class="animated-features__item-info">
+          <blockquote>
+            <p class="animated-features__item-text">
+              The team was professional, responsive, and a pleasure to work
+              with. We highly recommend VRNas for any VR needs.
+            </p>
+          </blockquote>
+          <p class="animated-features__item-label">
+            Robert Fox - <span>CEO Anono</span>
+          </p>
+        </div>
       </li>
     </ul>
     <!-- сделать компонент или миксин для контейнеров с одинаковыми стилями? -->
