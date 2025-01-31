@@ -153,6 +153,7 @@
         <ul class="animated-features">
           <li class="animated-features__item">
             <img src="" alt="" class="animated-features__item-img" />
+            <!-- v-if info -->
             <div class="animated-features__item-info">
               <blockquote>
                 <p class="animated-features__item-text">
@@ -160,7 +161,9 @@
                   with. We highly recommend VRNas for any VR needs.
                 </p>
               </blockquote>
-              <p class="animated-features__item-label">Robert Fox - <span>CEO Anono</span></p>
+              <p class="animated-features__item-label">
+                Robert Fox - <span>CEO Anono</span>
+              </p>
             </div>
           </li>
         </ul>
@@ -199,15 +202,12 @@
       </section>
 
       <section class="articles">
-        <!-- component title title_secondary -->
-        <h3 class="title title_secondary">our service</h3>
-        <!-- component title title_2 -->
-        <h2 class="heading_2">our service</h2>
-        <div class="articles__button">
+        <header class="articles__header">
+          <!-- component section-intro -->
           <!-- button button_main component -->
-        </div>
-        <div class="articles__main">
-          <div class="articles__popular">
+        </header>
+        <section class="articles__main">
+          <div class="articles__column">
             <!-- подумать над структурой -->
             <v-carousel>
               <v-carousel-item
@@ -227,24 +227,12 @@
             </v-carousel>
           </div>
 
-          <div class="articles__items">
-            <!-- сделать компонент для контейнеров с одинаковыми стилями? -->
+          <div class="articles__column">
             <ul class="articles__list">
               <li class="articles__list-item">
                 <!-- if mobile -->
                 <a href="#" class="articles__link">
-                  <!-- component article card -->
-                  <div class="articles__item-container">
-                    <!-- привести в порядок нейминг в list-..., чтобы был одинаковым -->
-                    <img class="articles__list-item-img" src="" alt="" />
-                    <p class="articles__list-label">VR Education</p>
-                    <p class="articles__item-description">
-                      The Future of Education: How VR is Revolutionizing the
-                      Classroom
-                    </p>
-                    <!-- !!!!!!! hide this link if mobile -->
-                    <a href="" class="articles__item-link"></a>
-                  </div>
+                  <!-- component blog-card-preview -->
                 </a>
 
                 <!-- if desktop -->
@@ -253,8 +241,8 @@
               </li>
             </ul>
           </div>
-        </div>
-        <div class="articles__subscribe-panel">
+        </section>
+        <section class="articles__subscribe-panel">
           <!-- subscribe-panel component -->
           <div class="subscribe-panel">
             <h3 class="subscribe-panel__title">
@@ -264,7 +252,7 @@
               <!-- доделать форму -->
             </form>
           </div>
-        </div>
+        </section>
       </section>
     </main>
 

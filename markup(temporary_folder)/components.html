@@ -231,6 +231,13 @@
     <ul class="gallery">
       <li class="gallery__item">
         <img src="" alt="" class="gallery__img" />
+        <!-- if hover, show socials -->
+        <ul class="gallery__item-socials">
+          <li class="gallery__social-item">
+            <a href="" class="gallery__social-link"></a>
+          </li>
+        </ul>
+        <!--  -->
         <p class="gallery__title">Bondan Prabowo</p>
         <p class="gallery__subtitle">CEO</p>
       </li>
@@ -515,6 +522,43 @@
         <!-- component button -->
       </div>
     </div>
-    <!-- сделать компонент или миксин для контейнеров с одинаковыми стилями? -->
+
+    <!-- component blog-card -->
+    <div class="blog-card">
+      <img src="" alt="" class="blog-card__img" />
+      <div class="blog-card__info">
+        <p class="blog-card__label">VR Games</p>
+        <p class="blog-card__description">
+          Entertainment Goes Virtual: The Rise of VR Gaming
+        </p>
+        <p class="blog-card__link-text">read more</p>
+      </div>
+    </div>
+
+    <!-- component blog-card-preview -->
+    <div class="blog-card-preview">
+      <div class="blog-card-preview__img-container">
+        <img src="" alt="" class="blog-card-preview__img" />
+      </div>
+      <div class="blog-card-preview__text">
+        <p class="blog-card-preview__label">VR Education</p>
+        <p class="blog-card-preview__description">
+          The Future of Education: How VR is Revolutionizing the Classroom
+        </p>
+      </div>
+      <!-- через v-if -->
+      <p class="blog-card-preview__arrow"></p>
+    </div>
+    <!-- в блоге использовать vuetify pagination? -->
+
+    <!-- component contact-card -->
+    <a href="#" class="contact-card">
+      <img src="" alt="" class="contact-card__img" />
+      <h5 class="contact-card__title">EMAIL</h5>
+      <p class="contact-card__info">Support@VRNas.com</p>
+    </a>
+
+    <!-- сделать форму -->
+    <!-- сделать компонент фильтра через радиокнопки -->
   </body>
 </html>
