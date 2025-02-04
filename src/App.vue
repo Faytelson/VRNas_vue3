@@ -1,9 +1,16 @@
 <template>
-  <div class="app"></div>
+  <div class="app">
+    <ButtonMain
+      tag="button"
+      label="Кнопка variant 1"
+      variant="primary"
+      ariaLabel="Текст для пользователя"
+    ></ButtonMain>
+  </div>
 </template>
 
-<script>
-export default {};
+<script setup>
+import ButtonMain from "@/components/ui/ButtonMain";
 </script>
 
 <style lang="scss" scoped></style>
