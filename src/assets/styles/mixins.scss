@@ -11,3 +11,13 @@
   font-size: $fz;
   font-weight: $fw;
 }
+
+@mixin border-gradient($gradient-position, $gradient-1, $gradient-2) {
+  border: 1px solid transparent;
+  border-image: linear-gradient(
+    $gradient-position,
+    $gradient-1,
+    $gradient-2
+  );
+  border-image-slice: 1;
+}

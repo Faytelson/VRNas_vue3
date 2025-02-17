@@ -5,9 +5,9 @@ $color-purple: #ca6aeb;
 $color-blue: #19b5f1;
 
 // color alerts
-$success: #00c566;
-$error: #ff4747;
-$warning: #facc15;
+$color-success: #00c566;
+$color-error: #ff4747;
+$color-warning: #facc15;
 
 // grayscale
 $color-black-100: #18181b;
@@ -18,3 +18,4 @@ $color-white: #ffffff;
 
 // UI
 $font-main: "Chakra Petch", sans-serif;
+$transition-main: .3s ease;

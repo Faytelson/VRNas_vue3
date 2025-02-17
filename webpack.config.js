@@ -3,6 +3,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { VuetifyPlugin } = require("webpack-plugin-vuetify");
 require("dotenv").config();
 
 module.exports = {
@@ -74,6 +75,7 @@ module.exports = {
       __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
       __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: JSON.stringify(false),
     }),
+    new VuetifyPlugin({ autoImport: true }),
   ],
   resolve: {
     alias: {
@@ -83,8 +85,9 @@ module.exports = {
   },
   devServer: {
     static: path.resolve(__dirname, "dist"),
-    port: 3000,
     hot: true,
+    host: "0.0.0.0",
+    allowedHosts: "all",
     compress: true,
   },
   devtool: "source-map",

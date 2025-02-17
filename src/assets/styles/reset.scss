@@ -40,6 +40,11 @@ textarea {
   outline: none;
   background: none;
   color: inherit;
+  appearance: none;
+}
+
+.button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a,
