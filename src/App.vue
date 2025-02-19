@@ -1,6 +1,9 @@
 <template>
   <div class="app">
     <div class="app__container">
+      <div class="app__breadcrumbs">
+        <Breadcrumbs></Breadcrumbs>
+      </div>
       <div class="app__buttons">
         <ButtonMain
           tag="button"
@@ -38,6 +41,7 @@
 <script setup>
 import ButtonMain from "@/components/ui/ButtonMain";
 import Accordion from "./components/ui/Accordion.vue";
+import Breadcrumbs from "./components/ui/Breadcrumbs.vue";
 </script>
 
 <style lang="scss" scoped>

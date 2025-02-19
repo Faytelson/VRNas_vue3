@@ -1,5 +1,4 @@
 <template>
-  <!-- не исключено испозьзование vuetify-tabs -->
   <div class="animated-tabs">
     <!-- v-if desktop -->
     <div class="animated-tabs__buttons" role="tablist">
