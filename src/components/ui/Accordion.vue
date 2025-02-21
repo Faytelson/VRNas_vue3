@@ -41,7 +41,7 @@
   }
 
   &:deep(.v-expansion-panel--active) {
-    @include border-gradient(90deg, $color-blue 0%, $color-purple 100%);
+    @include border-gradient-colored;
   }
 
   &:deep(.v-expansion-panel-title) {

@@ -1,5 +1,8 @@
 <template>
   <div class="app">
+    <div class="app__header">
+      <Header></Header>
+    </div>
     <div class="app__container">
       <div class="app__breadcrumbs">
         <Breadcrumbs></Breadcrumbs>
@@ -42,16 +45,26 @@
 import ButtonMain from "@/components/ui/ButtonMain";
 import Accordion from "./components/ui/Accordion.vue";
 import Breadcrumbs from "./components/ui/Breadcrumbs.vue";
+import Header from "./components/Header.vue";
 </script>
 
 <style lang="scss" scoped>
 .app {
   height: 100%;
   background-color: black;
+  padding-bottom: 50px;
 
   &__container {
     max-width: 80%;
     margin: 0 auto;
+  }
+
+  &__header {
+    margin-bottom: 20px;
+  }
+
+  &__breadcrumbs {
+    margin-bottom: 20px;
   }
 
   &__buttons {

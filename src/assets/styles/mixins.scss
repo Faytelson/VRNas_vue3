@@ -21,3 +21,7 @@
   );
   border-image-slice: 1;
 }
+
+@mixin border-gradient-colored {
+  @include border-gradient(90deg, rgb(12, 186, 241) 0%, rgb(233, 92, 233) 100%);
+}

@@ -57,6 +57,7 @@ const computedClass = computed(() => {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
   min-width: 150px;
   cursor: pointer;
 
@@ -89,7 +90,7 @@ const computedClass = computed(() => {
     padding: 0 24px;
     height: 52px;
     background: transparent;
-    @include border-gradient(90deg, rgb(12, 186, 241) 0%, rgb(233, 92, 233) 100%);
+    @include border-gradient-colored;
     position: relative;
 
     &::after {
