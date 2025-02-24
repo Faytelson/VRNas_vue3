@@ -13,11 +13,7 @@
         <Burger @click="toggleMenu" :isActive="isMenuActive"></Burger>
       </div>
 
-      <nav
-        v-if="isMobile"
-        v-show="isMenuActive"
-        class="header__nav-mobile nav-mobile"
-      >
+      <nav v-if="isMobile" class="header__nav-mobile nav-mobile">
         <menu class="nav-mobile__menu">
           <li class="nav-mobile__menu-item active">
             <a href="#" class="nav-mobile__menu-link">Home</a>
@@ -78,6 +74,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import Burger from "./ui/Burger.vue";
 import ButtonMain from "./ui/ButtonMain.vue";
 import { useWindowSize } from "@vueuse/core";
+import gsap from "gsap";
 
 // breakpoints & window
 const { width, height } = useWindowSize();
@@ -109,6 +106,43 @@ const toggleMenu = () => {
 watch(width, (newWidth) => {
   if (newWidth >= tabletBreakpoint) {
     isMenuActive.value = false;
+  }
+});
+
+watch(isMenuActive, (newMenuStatus) => {
+  const menuTL = gsap.timeline();
+  if (newMenuStatus) {
+    menuTL
+      .to(".nav-mobile", {
+        opacity: 1,
+        visibility: "visible",
+        duration: 0.6,
+        ease: "power2.out",
+      })
+      .fromTo(
+        ".nav-mobile__menu-item",
+        {
+          opacity: 0,
+          y: 20,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          stagger: 0.6,
+          ease: "power2.out",
+        },
+        "-=0.4"
+      );
+  } else {
+    menuTL
+      .clear()
+      .to(".nav-mobile", {
+        opacity: 0,
+        duration: 0.3,
+        ease: "power1.in",
+      })
+      .set(".nav-mobile", { visibility: "hidden" }, "+=0.3");
   }
 });
 </script>
@@ -145,11 +179,13 @@ watch(width, (newWidth) => {
   padding: 12px 16px 20px;
   background-image: linear-gradient(
       90deg,
-      rgba(37, 37, 50, 0.9),
-      rgba(37, 37, 50, 0.9)
+      rgba(37, 37, 50, 0.95),
+      rgba(37, 37, 50, 0.95)
     ),
     linear-gradient(rgba(12, 186, 241, 0.5) 0%, rgba(233, 92, 233, 0.4) 100%);
   z-index: 999;
+  opacity: 0;
+  visibility: hidden;
 
   &__menu {
     display: flex;
@@ -198,9 +234,9 @@ watch(width, (newWidth) => {
 
   &__submenu {
     padding-left: 10px;
-    opacity: 0;
-    visibility: hidden;
-    transition: visibility 0s ease 0.3s, opacity 0.3s ease-in;
+    // opacity: 0;
+    // visibility: hidden;
+    // transition: visibility 0s ease 0.3s, opacity 0.3s ease-in;
     height: 0;
   }
 
