@@ -64,7 +64,7 @@ const computedClass = computed(() => {
   &_primary {
     height: 50px;
     padding: 0 38px;
-    border: 1px solid $color-black-100;
+    border: 1px solid $color-black-1;
     background: linear-gradient(
         rgba(255, 255, 255, 0.2),
         rgba(255, 255, 255, 0.2)

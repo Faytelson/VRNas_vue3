@@ -1,36 +1,43 @@
 <template>
   <header class="header">
     <div class="header__container">
-      <a href="#" class="header__logo">
-        <img
-          src="@/assets/images/logo.png"
-          alt="Логотип компании VRNas"
-          class="header__logo-img"
-        />
-      </a>
+      <nav v-if="isMobile" class="header__mobile">
+        <a href="#" class="header__logo">
+          <img
+            src="@/assets/images/logo.png"
+            alt="Логотип компании VRNas"
+            class="header__logo-img"
+          />
+        </a>
+        <div class="header__burger">
+          <Burger @click="toggleMenu" :isActive="isMenuActive"></Burger>
+        </div>
+        <div class="header__mobile-nav js-mobile-nav">
+          <div class="header__mobile-menu">
+            <Menu :isActive="isMenuActive"></Menu>
+          </div>
+          <div class="header__mobile-button">
+            <ButtonMain
+              tag="button"
+              label="Contact us"
+              variant="secondary"
+            ></ButtonMain>
+          </div>
+        </div>
+      </nav>
 
-      <div v-if="isMobile" class="header__burger">
-        <Burger @click="toggleMenu" :isActive="isMenuActive"></Burger>
-      </div>
-
-      <nav v-if="isMobile" class="header__nav-mobile nav-mobile">
-        <menu class="nav-mobile__menu">
-          <li class="nav-mobile__menu-item active">
-            <a href="#" class="nav-mobile__menu-link">Home</a>
-          </li>
-          <li class="nav-mobile__menu-item nav-mobile__menu-item_dropdown">
-            <span class="nav-mobile__submenu-title">About us</span>
-            <ul class="nav-mobile__submenu">
-              <li class="nav-mobile__submenu-item">
-                <a href="#" class="nav-mobile__submenu-link">Sublist Item</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-mobile__menu-item">
-            <a href="#" class="nav-mobile__menu-link">Home</a>
-          </li>
-        </menu>
-        <div class="nav-mobile__button">
+      <nav v-if="!isMobile" class="header__desktop">
+        <a href="#" class="header__logo">
+          <img
+            src="@/assets/images/logo.png"
+            alt="Логотип компании VRNas"
+            class="header__logo-img"
+          />
+        </a>
+        <div class="header__desktop-menu">
+          <Menu></Menu>
+        </div>
+        <div class="header__desktop-button">
           <ButtonMain
             tag="button"
             label="Contact us"
@@ -38,43 +45,17 @@
           ></ButtonMain>
         </div>
       </nav>
-
-      <nav v-if="!isMobile" class="header__nav-desktop nav-desktop">
-        <menu class="nav-desktop__menu">
-          <li class="nav-desktop__menu-item active">
-            <a href="#" class="nav-desktop__menu-link">Home</a>
-          </li>
-          <li class="nav-desktop__menu-item nav-desktop__menu-item_dropdown">
-            <span class="nav-desktop__submenu-title">About us</span>
-            <ul class="nav-desktop__submenu">
-              <li class="nav-desktop__submenu-item">
-                <a href="#" class="nav-desktop__submenu-link">Sublist Item</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-desktop__menu-item">
-            <a href="#" class="nav-desktop__menu-link">Home</a>
-          </li>
-        </menu>
-      </nav>
-
-      <div v-if="width >= tabletBreakpoint" class="header__button">
-        <ButtonMain
-          tag="button"
-          label="Contact us"
-          variant="secondary"
-        ></ButtonMain>
-      </div>
     </div>
   </header>
 </template>
 
 <script setup>
 import { ref, computed, watch, onMounted } from "vue";
-import Burger from "./ui/Burger.vue";
-import ButtonMain from "./ui/ButtonMain.vue";
 import { useWindowSize } from "@vueuse/core";
 import gsap from "gsap";
+import Burger from "./ui/Burger.vue";
+import ButtonMain from "./ui/ButtonMain.vue";
+import Menu from "./Menu.vue";
 
 // breakpoints & window
 const { width, height } = useWindowSize();
@@ -110,39 +91,23 @@ watch(width, (newWidth) => {
 });
 
 watch(isMenuActive, (newMenuStatus) => {
-  const menuTL = gsap.timeline();
+  const navTL = gsap.timeline();
   if (newMenuStatus) {
-    menuTL
-      .to(".nav-mobile", {
-        opacity: 1,
-        visibility: "visible",
-        duration: 0.6,
-        ease: "power2.out",
-      })
-      .fromTo(
-        ".nav-mobile__menu-item",
-        {
-          opacity: 0,
-          y: 20,
-        },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          stagger: 0.6,
-          ease: "power2.out",
-        },
-        "-=0.4"
-      );
+    navTL.to(".js-mobile-nav", {
+      opacity: 1,
+      visibility: "visible",
+      duration: 0.6,
+      ease: "power2.out",
+    });
   } else {
-    menuTL
+    navTL
       .clear()
-      .to(".nav-mobile", {
+      .to(".js-mobile-nav", {
         opacity: 0,
         duration: 0.3,
         ease: "power1.in",
       })
-      .set(".nav-mobile", { visibility: "hidden" }, "+=0.3");
+      .set(".js-mobile-nav", { visibility: "hidden" }, "+=0.3");
   }
 });
 </script>
@@ -153,6 +118,17 @@ watch(isMenuActive, (newMenuStatus) => {
   position: relative;
 
   &__container {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__logo {
+    width: 101px;
+    height: 30px;
+  }
+
+  &__mobile {
+    width: 100%;
     height: 100%;
     display: flex;
     justify-content: space-between;
@@ -160,147 +136,55 @@ watch(isMenuActive, (newMenuStatus) => {
     padding: 0 16px;
   }
 
-  &__logo {
-    width: 101px;
-    height: 30px;
-  }
-}
-
-.nav-mobile {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: calc(100vh - 102px);
-  height: calc(var(--vh, 1vh) * 100 - 102px);
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  padding: 12px 16px 20px;
-  background-image: linear-gradient(
-      90deg,
-      rgba(37, 37, 50, 0.95),
-      rgba(37, 37, 50, 0.95)
-    ),
-    linear-gradient(rgba(12, 186, 241, 0.5) 0%, rgba(233, 92, 233, 0.4) 100%);
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-
-  &__menu {
+  &__mobile-nav {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    justify-content: space-between;
+    height: calc(100vh - 102px);
+    height: calc(var(--vh, 1vh) * 100 - 102px);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    padding: 12px 16px 20px;
+    background-image: linear-gradient(
+        90deg,
+        rgba(37, 37, 50, 0.95),
+        rgba(37, 37, 50, 0.95)
+      ),
+      linear-gradient(rgba(12, 186, 241, 0.5) 0%, rgba(233, 92, 233, 0.4) 100%);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
   }
 
-  &__menu-item {
-    &_dropdown {
-      position: relative;
-
-      &:hover {
-        .header__submenu {
-          height: auto;
-          opacity: 1;
-          visibility: visible;
-          transition-delay: 0s;
-        }
-      }
-
-      &::after {
-        @include pseudo;
-        top: 0;
-        right: 0;
-        height: 100%;
-        width: 10px;
-        background: url("@/assets/images/icons/icon_arrow_down.svg") 0 12px /
-          contain no-repeat;
-      }
-    }
-
-    .nav-mobile__menu-link,
-    .nav-mobile__submenu-title {
-      @include font($font-main, 24px, 300);
-      color: $color-gray-2;
-    }
-
-    &.active {
-      .nav-mobile__menu-link,
-      .nav-mobile__submenu-title {
-        font-weight: 400;
-        color: $color-white;
-      }
-    }
-  }
-
-  &__submenu {
-    padding-left: 10px;
-    // opacity: 0;
-    // visibility: hidden;
-    // transition: visibility 0s ease 0.3s, opacity 0.3s ease-in;
-    height: 0;
-  }
-
-  &__submenu-item {
-    @include font($font-main, 18px, 400);
-    color: $color-white;
+  &__desktop {
+    display: none;
   }
 }
 
-.nav-desktop {
-  &__menu {
-    display: flex;
-    gap: 64px;
-  }
-
-  &__menu-item {
-    .nav-desktop__menu-link,
-    .nav-desktop__submenu-title {
-      @include font($font-main, 16px, 300);
-      color: $color-gray-2;
-      line-height: 1.75em;
+@media screen and (min-width: 768px) {
+  .header {
+    &__mobile {
+      display: none;
     }
 
-    &.active {
-      .nav-desktop__menu-link,
-      .nav-desktop__submenu-title {
-        font-weight: 500;
-        color: $color-white;
-      }
-    }
-
-    &_dropdown {
-      position: relative;
-
-      &:hover {
-        .header__submenu {
-          height: auto;
-          opacity: 1;
-          visibility: visible;
-          transition-delay: 0s;
-        }
-      }
-
-      &::after {
-        @include pseudo;
-        top: 0;
-        right: 0;
-        height: 100%;
-        width: 10px;
-        background: url("@/assets/images/icons/icon_arrow_down.svg") 0 12px /
-          contain no-repeat;
-      }
+    &__desktop {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
     }
   }
 }
 
 @media screen and (min-width: 425px) {
-  .nav-mobile {
-    &__button {
+  .header {
+    &__mobile-button {
       align-self: center;
     }
   }
-}
-
-@media screen and (min-width: 768px) {
 }
 </style>

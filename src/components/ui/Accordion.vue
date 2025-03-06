@@ -34,8 +34,8 @@
 
   &:deep(.v-expansion-panel) {
     padding: 0 14px;
-    background-color: $color-black-50;
-    @include border-gradient(90deg, $color-gray-2 0%, $color-black-100 100%);
+    background-color: $color-black-2;
+    @include border-gradient(90deg, $color-gray-2 0%, $color-black-1 100%);
     border-radius: 0%;
     transition: all $transition-main;
   }
