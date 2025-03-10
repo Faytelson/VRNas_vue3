@@ -42,17 +42,31 @@
 </template>
 
 <script setup>
+import { computed, watch } from "vue";
+import { useNavigationStore } from "./store/navigation";
+// components
 import ButtonMain from "@/components/ui/ButtonMain";
 import Accordion from "./components/ui/Accordion.vue";
 import Breadcrumbs from "./components/ui/Breadcrumbs.vue";
 import Header from "./components/Header.vue";
+
+const navigationStore = useNavigationStore();
+const isMenuActive = computed(() => navigationStore.isMenuActive);
+
+watch(isMenuActive, (value) => {
+  if (value) {
+    document.body.classList.add("locked");
+  } else {
+    document.body.classList.remove("locked");
+  }
+});
 </script>
 
 <style lang="scss" scoped>
 .app {
   height: 100%;
-  background-color: black;
-  padding-bottom: 50px;
+  background-color: $color-deep-black;
+  padding: 122px 0 50px;
 
   &__container {
     max-width: 80%;
@@ -60,7 +74,12 @@ import Header from "./components/Header.vue";
   }
 
   &__header {
-    margin-bottom: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: $color-deep-black;
+    z-index: 999;
   }
 
   &__breadcrumbs {

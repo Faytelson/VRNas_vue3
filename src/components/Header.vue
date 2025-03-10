@@ -26,7 +26,7 @@
         </div>
       </nav>
 
-      <nav v-if="!isMobile" class="header__desktop">
+      <nav v-else class="header__desktop">
         <a href="#" class="header__logo">
           <img
             src="@/assets/images/logo.png"
@@ -50,17 +50,19 @@
 </template>
 
 <script setup>
+import { useNavigationStore } from "@/store/navigation";
 import { ref, computed, watch, onMounted } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import gsap from "gsap";
+// components
 import Burger from "./ui/Burger.vue";
 import ButtonMain from "./ui/ButtonMain.vue";
 import Menu from "./Menu.vue";
 
 // breakpoints & window
 const { width, height } = useWindowSize();
-const tabletBreakpoint = 768;
-const isMobile = computed(() => width.value < tabletBreakpoint);
+const desktopBreakpoint = 1024;
+const isMobile = computed(() => width.value < desktopBreakpoint);
 
 // код для корректного отображения шапки на моб устройствах
 const vh = computed(() => height.value * 0.01);
@@ -79,14 +81,16 @@ watch(height, () => {
 });
 
 // меню
-const isMenuActive = ref(false);
+const navigationStore = useNavigationStore();
+const isMenuActive = computed(() => navigationStore.isMenuActive);
+
 const toggleMenu = () => {
-  isMenuActive.value = !isMenuActive.value;
+  navigationStore.isMenuActive = !navigationStore.isMenuActive;
 };
 
 watch(width, (newWidth) => {
-  if (newWidth >= tabletBreakpoint) {
-    isMenuActive.value = false;
+  if (newWidth >= desktopBreakpoint) {
+    navigationStore.isMenuActive = false;
   }
 });
 
@@ -114,12 +118,13 @@ watch(isMenuActive, (newMenuStatus) => {
 
 <style lang="scss" scoped>
 .header {
-  height: 102px;
+  height: $header-height-mobile;
   position: relative;
 
   &__container {
     width: 100%;
     height: 100%;
+    padding: 0 16px;
   }
 
   &__logo {
@@ -133,19 +138,20 @@ watch(isMenuActive, (newMenuStatus) => {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 16px;
   }
 
   &__mobile-nav {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(100vh - 102px);
-    height: calc(var(--vh, 1vh) * 100 - 102px);
+    row-gap: 30px;
+    height: calc(100vh - $header-height-mobile);
+    height: calc(var(--vh, 1vh) * 100 - $header-height-mobile);
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
+    overflow-y: auto;
     padding: 12px 16px 20px;
     background-image: linear-gradient(
         90deg,
@@ -153,7 +159,6 @@ watch(isMenuActive, (newMenuStatus) => {
         rgba(37, 37, 50, 0.95)
       ),
       linear-gradient(rgba(12, 186, 241, 0.5) 0%, rgba(233, 92, 233, 0.4) 100%);
-    z-index: 999;
     opacity: 0;
     visibility: hidden;
   }
@@ -163,8 +168,10 @@ watch(isMenuActive, (newMenuStatus) => {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: $desktopBreakpoint) {
   .header {
+    height: $header-height-desktop;
+
     &__mobile {
       display: none;
     }
@@ -175,12 +182,11 @@ watch(isMenuActive, (newMenuStatus) => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 16px;
     }
   }
 }
 
-@media screen and (min-width: 425px) {
+@media screen and (min-width: $mobileLgBreakpoint) {
   .header {
     &__mobile-button {
       align-self: center;

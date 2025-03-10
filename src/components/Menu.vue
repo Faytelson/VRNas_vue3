@@ -1,6 +1,10 @@
 <template>
-  <menu class="menu">
-    <li class="menu__item" v-for="menuItem in menuElems" :key="menuItem.title">
+  <ul class="menu">
+    <li
+      class="menu__item"
+      v-for="menuItem in navigationStore.menuElems"
+      :key="menuItem.title"
+    >
       <div v-if="menuItem.submenu">
         <h5
           class="menu__title menu__title_submenu"
@@ -26,43 +30,13 @@
         {{ menuItem.title }}
       </a>
     </li>
-  </menu>
+  </ul>
 </template>
 
 <script setup>
+import { useNavigationStore } from "@/store/navigation";
 import { ref, computed, watch } from "vue";
 import gsap from "gsap";
-
-const menuElems = [
-  {
-    title: "Home",
-  },
-  {
-    title: "Submenu",
-    submenu: [
-      {
-        title: "SubItem1",
-      },
-      {
-        title: "SubItem2",
-      },
-    ],
-  },
-  {
-    title: "About",
-  },
-  {
-    title: "Submenu2",
-    submenu: [
-      {
-        title: "SubItem3",
-      },
-      {
-        title: "SubItem4",
-      },
-    ],
-  },
-];
 
 const props = defineProps({
   isActive: {
@@ -70,6 +44,8 @@ const props = defineProps({
     default: false,
   },
 });
+
+const navigationStore = useNavigationStore();
 
 const isMenuActive = computed(() => props.isActive);
 
@@ -83,7 +59,14 @@ const openSubmenu = (elem) => {
   gsap.fromTo(
     elem,
     { opacity: 0, height: 0 },
-    { opacity: 1, height: "auto", duration: 0.3 }
+    {
+      opacity: 1,
+      height: "auto",
+      duration: 0.3,
+      onComplete: () => {
+        elem.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      },
+    }
   );
 };
 const closeSubmenu = (elem) => {
@@ -95,7 +78,7 @@ const closeSubmenu = (elem) => {
 };
 
 const toggleSubmenu = (event) => {
-  activeSubmenu.value = event.target.nextElementSibling;
+  activeSubmenu.value = event.currentTarget.nextElementSibling;
 
   if (prevSubmenu.value === activeSubmenu.value) {
     closeSubmenu(activeSubmenu.value);
@@ -162,7 +145,7 @@ watch(isMenuActive, (currentStatus) => {
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: $desktopBreakpoint) {
   .menu {
     flex-direction: row;
     gap: 64px;
