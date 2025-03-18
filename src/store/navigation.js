@@ -27,7 +27,7 @@ export const useNavigationStore = defineStore("navigation", () => {
       title: "Submenu2",
       submenu: [
         {
-          title: "SubItem3",
+          title: "SubItem3 long text item",
         },
         {
           title: "SubItem4",

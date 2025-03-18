@@ -36,7 +36,9 @@
       </a>
 
       <nav class="desktop-nav">
-        <div class="desktop-nav__menu"><Menu></Menu></div>
+        <div class="desktop-nav__menu">
+          <Menu></Menu>
+        </div>
 
         <div class="desktop-nav__button">
           <ButtonMain

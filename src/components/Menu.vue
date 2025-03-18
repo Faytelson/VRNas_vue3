@@ -6,17 +6,17 @@
       :key="menuItem.id"
     >
       <div v-if="menuItem.submenu" @click="toggleSubmenu($event)">
-        <h5 class="menu__submenu-title">
+        <h5 class="menu__title menu__title_submenu">
           {{ menuItem.title }}
         </h5>
 
-        <ul class="menu__submenu">
+        <ul class="menu__submenu submenu">
           <li
-            class="menu__submenu-item"
+            class="submenu__item"
             v-for="subItem in menuItem.submenu"
             :key="subItem.title"
           >
-            <a href="#" class="menu__submenu-link">
+            <a href="#" class="submenu__link">
               {{ subItem.title }}
             </a>
           </li>
@@ -24,7 +24,7 @@
       </div>
 
       <a href="#" class="menu__link" v-else>
-        <span>{{ menuItem.title }}</span>
+        <h5 class="menu__title">{{ menuItem.title }}</h5>
       </a>
     </li>
   </ul>
@@ -33,6 +33,7 @@
 <script setup>
 import { useNavigationStore } from "@/store/navigation";
 import { ref, computed, watch } from "vue";
+import { useWindowSize } from "@vueuse/core";
 import gsap from "gsap";
 
 const props = defineProps({
@@ -43,12 +44,11 @@ const props = defineProps({
 });
 
 const navigationStore = useNavigationStore();
-
+const { width } = useWindowSize();
+const desktopBreakpoint = 1024;
 const isMenuActive = computed(() => props.isActive);
 
-// анимация появления элементов основного меню
-
-// анимация подменю
+// анимация submenu
 const activeSubmenu = ref(null);
 const prevSubmenu = ref(null);
 
@@ -73,12 +73,15 @@ const closeSubmenu = (elem) => {
     duration: 0.3,
   });
 };
-
 const toggleSubmenu = (event) => {
   if (event.target.closest("a")) {
     return;
   }
-  activeSubmenu.value = event.currentTarget.querySelector(".menu__submenu");
+  if (width.value > desktopBreakpoint) {
+    return;
+  }
+
+  activeSubmenu.value = event.currentTarget.querySelector(".submenu");
 
   if (prevSubmenu.value === activeSubmenu.value) {
     closeSubmenu(activeSubmenu.value);
@@ -93,12 +96,17 @@ const toggleSubmenu = (event) => {
   openSubmenu(activeSubmenu.value);
   prevSubmenu.value = activeSubmenu.value;
 };
+const resetSubmenus = () => {
+  if (activeSubmenu.value) {
+    closeSubmenu(activeSubmenu.value);
+  }
+  activeSubmenu.value = null;
+  prevSubmenu.value = null;
+};
 
 watch(isMenuActive, (currentStatus) => {
-  if (!currentStatus) {
-    closeSubmenu(activeSubmenu.value);
-    activeSubmenu.value = null;
-    prevSubmenu.value = null;
+  if (width.value < desktopBreakpoint && !currentStatus) {
+    resetSubmenus();
   }
 });
 </script>
@@ -108,38 +116,36 @@ watch(isMenuActive, (currentStatus) => {
   display: flex;
   flex-direction: column;
 
-  &__submenu-title,
-  &__link {
+  &__title {
     @include font($font-main, 24px, 300);
     color: $color-gray-2;
     height: 48px;
     display: flex;
     align-items: center;
-  }
 
-  &__submenu-title {
-    position: relative;
-    padding-right: 22px;
+    &_submenu {
+      position: relative;
+      padding-right: 22px;
 
-    &::after {
-      @include pseudo;
-      top: 0;
-      right: 0;
-      height: 100%;
-      width: 10px;
-      background: url("@/assets/images/icons/icon_arrow_down.svg") 0 50% /
-        contain no-repeat;
+      &::after {
+        @include pseudo;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 10px;
+        background: url("@/assets/images/icons/icon_arrow_down.svg") 0 50% /
+          contain no-repeat;
+      }
     }
   }
+}
 
-  &__submenu {
-    background-color: $color-deep-black;
-    height: 0;
-    opacity: 0;
-    overflow: hidden;
-  }
+.submenu {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
 
-  &__submenu-link {
+  &__link {
     display: block;
     @include font($font-main, 18px, 300);
     color: $color-gray-2;
@@ -153,20 +159,45 @@ watch(isMenuActive, (currentStatus) => {
     justify-content: center;
     gap: 64px;
 
-    &__title {
-      font-size: 16px;
-      line-height: 1.75em;
+    &__item {
+      position: relative;
+
+      &:hover .submenu {
+        opacity: 1;
+        visibility: visible;
+      }
     }
 
-    &__submenu {
-      padding-left: 0;
+    &__link,
+    &__title {
+      font-size: 18px;
+      line-height: 1.75em;
+    }
+  }
+
+  .submenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: max-content;
+    min-width: 100px;
+    max-width: 250px;
+    height: auto;
+    visibility: hidden;
+    padding-left: 0;
+    background-color: $color-deep-black;
+    transition: opacity $transition-main;
+    border-radius: 3px;
+
+    &__link {
+      font-size: 16px;
     }
   }
 }
 
 @media screen and (min-width: $mobileLgBreakpoint) {
   .menu {
-    &__submenu-title {
+    &__title {
       display: inline-flex;
     }
   }
