@@ -5,6 +5,7 @@ export const useNavigationStore = defineStore("navigation", () => {
   const menuElems = ref([
     {
       title: "Home",
+      id: 0,
     },
     {
       title: "Submenu",
@@ -16,9 +17,11 @@ export const useNavigationStore = defineStore("navigation", () => {
           title: "SubItem2",
         },
       ],
+      id: 1,
     },
     {
       title: "About",
+      id: 2,
     },
     {
       title: "Submenu2",
@@ -30,6 +33,7 @@ export const useNavigationStore = defineStore("navigation", () => {
           title: "SubItem4",
         },
       ],
+      id: 3,
     },
   ]);
 

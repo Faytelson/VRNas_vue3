@@ -59,10 +59,11 @@ const computedClass = computed(() => {
   align-items: center;
   width: 100%;
   min-width: 150px;
+  height: 50px;
+  min-height: 52px;
   cursor: pointer;
 
   &_primary {
-    height: 50px;
     padding: 0 38px;
     border: 1px solid $color-black-1;
     background: linear-gradient(
@@ -88,7 +89,6 @@ const computedClass = computed(() => {
 
   &_secondary {
     padding: 0 24px;
-    height: 52px;
     background: transparent;
     @include border-gradient-colored;
     position: relative;

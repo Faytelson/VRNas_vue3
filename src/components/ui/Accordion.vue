@@ -87,7 +87,7 @@
   }
 }
 
-@media screen and (min-width: 576px) {
+@media screen and (min-width: $tabletSmBreakpoint) {
   .accordion {
     &:deep(.v-expansion-panel) {
       padding: 0 24px;

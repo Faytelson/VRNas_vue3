@@ -3,13 +3,10 @@
     <li
       class="menu__item"
       v-for="menuItem in navigationStore.menuElems"
-      :key="menuItem.title"
+      :key="menuItem.id"
     >
-      <div v-if="menuItem.submenu">
-        <h5
-          class="menu__title menu__title_submenu"
-          @click="toggleSubmenu($event)"
-        >
+      <div v-if="menuItem.submenu" @click="toggleSubmenu($event)">
+        <h5 class="menu__submenu-title">
           {{ menuItem.title }}
         </h5>
 
@@ -19,15 +16,15 @@
             v-for="subItem in menuItem.submenu"
             :key="subItem.title"
           >
-            <a href="#" class="menu__submenu-title">
+            <a href="#" class="menu__submenu-link">
               {{ subItem.title }}
             </a>
           </li>
         </ul>
       </div>
 
-      <a href="#" class="menu__title" v-else>
-        {{ menuItem.title }}
+      <a href="#" class="menu__link" v-else>
+        <span>{{ menuItem.title }}</span>
       </a>
     </li>
   </ul>
@@ -78,7 +75,10 @@ const closeSubmenu = (elem) => {
 };
 
 const toggleSubmenu = (event) => {
-  activeSubmenu.value = event.currentTarget.nextElementSibling;
+  if (event.target.closest("a")) {
+    return;
+  }
+  activeSubmenu.value = event.currentTarget.querySelector(".menu__submenu");
 
   if (prevSubmenu.value === activeSubmenu.value) {
     closeSubmenu(activeSubmenu.value);
@@ -96,6 +96,7 @@ const toggleSubmenu = (event) => {
 
 watch(isMenuActive, (currentStatus) => {
   if (!currentStatus) {
+    closeSubmenu(activeSubmenu.value);
     activeSubmenu.value = null;
     prevSubmenu.value = null;
   }
@@ -106,25 +107,28 @@ watch(isMenuActive, (currentStatus) => {
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 20px;
 
-  &__title {
+  &__submenu-title,
+  &__link {
     @include font($font-main, 24px, 300);
     color: $color-gray-2;
+    height: 48px;
+    display: flex;
+    align-items: center;
+  }
 
-    &_submenu {
-      position: relative;
-      padding-right: 18px;
+  &__submenu-title {
+    position: relative;
+    padding-right: 22px;
 
-      &::after {
-        @include pseudo;
-        top: 0;
-        right: 0;
-        height: 100%;
-        width: 10px;
-        background: url("@/assets/images/icons/icon_arrow_down.svg") 0 12px /
-          contain no-repeat;
-      }
+    &::after {
+      @include pseudo;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 10px;
+      background: url("@/assets/images/icons/icon_arrow_down.svg") 0 50% /
+        contain no-repeat;
     }
   }
 
@@ -135,19 +139,18 @@ watch(isMenuActive, (currentStatus) => {
     overflow: hidden;
   }
 
-  &__submenu-item {
-    padding: 10px 20px;
-  }
-
-  &__submenu-title {
+  &__submenu-link {
+    display: block;
     @include font($font-main, 18px, 300);
     color: $color-gray-2;
+    padding: 10px 20px;
   }
 }
 
-@media screen and (min-width: $desktopBreakpoint) {
+@media screen and (min-width: $desktopSmBreakpoint) {
   .menu {
     flex-direction: row;
+    justify-content: center;
     gap: 64px;
 
     &__title {
@@ -157,6 +160,14 @@ watch(isMenuActive, (currentStatus) => {
 
     &__submenu {
       padding-left: 0;
+    }
+  }
+}
+
+@media screen and (min-width: $mobileLgBreakpoint) {
+  .menu {
+    &__submenu-title {
+      display: inline-flex;
     }
   }
 }

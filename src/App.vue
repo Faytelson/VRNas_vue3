@@ -1,43 +1,34 @@
 <template>
-  <div class="app">
-    <div class="app__header">
-      <Header></Header>
-    </div>
-    <div class="app__container">
-      <div class="app__breadcrumbs">
-        <Breadcrumbs></Breadcrumbs>
-      </div>
-      <div class="app__buttons">
-        <ButtonMain
-          tag="button"
-          label="Variant 1"
-          variant="primary"
-        ></ButtonMain>
+  <div class="layout">
+    <Header></Header>
 
-        <ButtonMain
-          tag="button"
-          label="Variant 1"
-          variant="primary"
-          :disabled="true"
-        ></ButtonMain>
+    <main>
+      <Breadcrumbs></Breadcrumbs>
 
-        <ButtonMain
-          tag="button"
-          label="Variant 2"
-          variant="secondary"
-        ></ButtonMain>
+      <ButtonMain tag="button" label="Variant 1" variant="primary"></ButtonMain>
 
-        <ButtonMain
-          tag="button"
-          label="Variant 2"
-          variant="secondary"
-          :disabled="true"
-        ></ButtonMain>
-      </div>
-      <div class="app__accordion">
-        <Accordion></Accordion>
-      </div>
-    </div>
+      <ButtonMain
+        tag="button"
+        label="Variant 1"
+        variant="primary"
+        :disabled="true"
+      ></ButtonMain>
+
+      <ButtonMain
+        tag="button"
+        label="Variant 2"
+        variant="secondary"
+      ></ButtonMain>
+
+      <ButtonMain
+        tag="button"
+        label="Variant 2"
+        variant="secondary"
+        :disabled="true"
+      ></ButtonMain>
+
+      <Accordion></Accordion>
+    </main>
   </div>
 </template>
 
@@ -63,31 +54,21 @@ watch(isMenuActive, (value) => {
 </script>
 
 <style lang="scss" scoped>
-.app {
-  height: 100%;
+.layout {
   background-color: $color-deep-black;
-  padding: 122px 0 50px;
+  padding: $header-height-mobile 0 100px; //временный отступ снизу
+}
 
-  &__container {
-    max-width: 80%;
-    margin: 0 auto;
+@media screen and (min-width: $desktopSmBreakpoint) {
+  .layout {
+    padding-top: $header-height-desktop;
   }
+}
 
-  &__header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: $color-deep-black;
-    z-index: 999;
-  }
-
-  &__breadcrumbs {
-    margin-bottom: 20px;
-  }
-
-  &__buttons {
-    margin-bottom: 45px;
-  }
+main {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 </style>

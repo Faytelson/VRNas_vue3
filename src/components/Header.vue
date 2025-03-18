@@ -1,43 +1,44 @@
 <template>
   <header class="header">
-    <div class="header__container">
-      <nav v-if="isMobile" class="header__mobile">
-        <a href="#" class="header__logo">
-          <img
-            src="@/assets/images/logo.png"
-            alt="Логотип компании VRNas"
-            class="header__logo-img"
-          />
-        </a>
-        <div class="header__burger">
-          <Burger @click="toggleMenu" :isActive="isMenuActive"></Burger>
+    <div v-if="isMobile" class="header__mobile">
+      <a href="#" class="main-logo">
+        <img
+          src="@/assets/images/logo.png"
+          alt="Логотип компании VRNas"
+          class="main-logo__img"
+        />
+      </a>
+
+      <Burger @click="toggleMenu" :isActive="isMenuActive"></Burger>
+
+      <nav class="mobile-nav">
+        <div class="mobile-nav__menu">
+          <Menu :isActive="isMenuActive"></Menu>
         </div>
-        <div class="header__mobile-nav js-mobile-nav">
-          <div class="header__mobile-menu">
-            <Menu :isActive="isMenuActive"></Menu>
-          </div>
-          <div class="header__mobile-button">
-            <ButtonMain
-              tag="button"
-              label="Contact us"
-              variant="secondary"
-            ></ButtonMain>
-          </div>
+
+        <div class="mobile-nav__button">
+          <ButtonMain
+            tag="button"
+            label="Contact us"
+            variant="secondary"
+          ></ButtonMain>
         </div>
       </nav>
+    </div>
 
-      <nav v-else class="header__desktop">
-        <a href="#" class="header__logo">
-          <img
-            src="@/assets/images/logo.png"
-            alt="Логотип компании VRNas"
-            class="header__logo-img"
-          />
-        </a>
-        <div class="header__desktop-menu">
-          <Menu></Menu>
-        </div>
-        <div class="header__desktop-button">
+    <div v-else class="header__desktop">
+      <a href="#" class="main-logo">
+        <img
+          src="@/assets/images/logo.png"
+          alt="Логотип компании VRNas"
+          class="main-logo__img"
+        />
+      </a>
+
+      <nav class="desktop-nav">
+        <div class="desktop-nav__menu"><Menu></Menu></div>
+
+        <div class="desktop-nav__button">
           <ButtonMain
             tag="button"
             label="Contact us"
@@ -97,7 +98,7 @@ watch(width, (newWidth) => {
 watch(isMenuActive, (newMenuStatus) => {
   const navTL = gsap.timeline();
   if (newMenuStatus) {
-    navTL.to(".js-mobile-nav", {
+    navTL.to(".mobile-nav", {
       opacity: 1,
       visibility: "visible",
       duration: 0.6,
@@ -106,31 +107,26 @@ watch(isMenuActive, (newMenuStatus) => {
   } else {
     navTL
       .clear()
-      .to(".js-mobile-nav", {
+      .to(".mobile-nav", {
         opacity: 0,
         duration: 0.3,
         ease: "power1.in",
       })
-      .set(".js-mobile-nav", { visibility: "hidden" }, "+=0.3");
+      .set(".mobile-nav", { visibility: "hidden" }, "+=0.3");
   }
 });
 </script>
 
 <style lang="scss" scoped>
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: $header-height-mobile;
-  position: relative;
-
-  &__container {
-    width: 100%;
-    height: 100%;
-    padding: 0 16px;
-  }
-
-  &__logo {
-    width: 101px;
-    height: 30px;
-  }
+  padding: 0 16px;
+  background-color: $color-deep-black;
+  z-index: 999;
 
   &__mobile {
     width: 100%;
@@ -140,35 +136,41 @@ watch(isMenuActive, (newMenuStatus) => {
     align-items: center;
   }
 
-  &__mobile-nav {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    row-gap: 30px;
-    height: calc(100vh - $header-height-mobile);
-    height: calc(var(--vh, 1vh) * 100 - $header-height-mobile);
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    overflow-y: auto;
-    padding: 12px 16px 20px;
-    background-image: linear-gradient(
-        90deg,
-        rgba(37, 37, 50, 0.95),
-        rgba(37, 37, 50, 0.95)
-      ),
-      linear-gradient(rgba(12, 186, 241, 0.5) 0%, rgba(233, 92, 233, 0.4) 100%);
-    opacity: 0;
-    visibility: hidden;
-  }
-
   &__desktop {
     display: none;
   }
 }
 
-@media screen and (min-width: $desktopBreakpoint) {
+.main-logo {
+  width: 101px;
+  min-width: 101px;
+  height: 30px;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 30px;
+  height: calc(100vh - $header-height-mobile);
+  height: calc(var(--vh, 1vh) * 100 - $header-height-mobile);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  overflow-y: auto;
+  padding: 12px 16px 20px;
+  background-image: linear-gradient(
+      90deg,
+      rgba(37, 37, 50, 0.95),
+      rgba(37, 37, 50, 0.95)
+    ),
+    linear-gradient(rgba(12, 186, 241, 0.5) 0%, rgba(233, 92, 233, 0.4) 100%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media screen and (min-width: $desktopSmBreakpoint) {
   .header {
     height: $header-height-desktop;
 
@@ -184,11 +186,22 @@ watch(isMenuActive, (newMenuStatus) => {
       align-items: center;
     }
   }
+
+  .desktop-nav {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    &__menu {
+      flex-grow: 1;
+    }
+  }
 }
 
 @media screen and (min-width: $mobileLgBreakpoint) {
-  .header {
-    &__mobile-button {
+  .mobile-nav {
+    &__button {
       align-self: center;
     }
   }

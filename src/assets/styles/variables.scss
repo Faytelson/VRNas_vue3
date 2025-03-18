@@ -22,6 +22,16 @@ $font-main: "Chakra Petch", sans-serif;
 $transition-main: 0.3s ease;
 $header-height-mobile: 82px;
 $header-height-desktop: 102px;
-$mobileLgBreakpoint: 425px;
-$tabletBreakpoint: 768px;
-$desktopBreakpoint: 1024px;
+
+$mobileMdBreakpoint: 375px;  // Стандартные смартфоны
+$mobileLgBreakpoint: 425px;  // Большие смартфоны
+
+$tabletSmBreakpoint: 600px;  // Маленькие планшеты
+$tabletMdBreakpoint: 768px;  // Средние планшеты
+// $tabletLgBreakpoint: 900px;  //Большие планшеты
+
+$desktopSmBreakpoint: 1024px;
+$desktopMdBreakpoint: 1280px;
+$desktopLgBreakpoint: 1440px;
+$desktopXlBreakpoint: 1920px;
+
