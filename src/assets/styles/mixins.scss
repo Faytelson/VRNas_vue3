@@ -14,14 +14,30 @@
 
 @mixin border-gradient($gradient-position, $gradient-1, $gradient-2) {
   border: 1px solid transparent;
-  border-image: linear-gradient(
-    $gradient-position,
-    $gradient-1,
-    $gradient-2
-  );
+  border-image: linear-gradient($gradient-position, $gradient-1, $gradient-2);
   border-image-slice: 1;
 }
 
 @mixin border-gradient-colored {
   @include border-gradient(90deg, rgb(12, 186, 241) 0%, rgb(233, 92, 233) 100%);
+}
+
+@mixin container {
+  padding: 0 16px;
+
+  @media screen and (min-width: $tabletSmBreakpoint) {
+    padding: 0 24px;
+  }
+
+  @media screen and (min-width: $desktopSmBreakpoint) {
+    padding: 0 calc((100vw - $container-width-md) / 2);
+  }
+
+  @media screen and (min-width: $desktopMdBreakpoint) {
+    padding: 0 calc((100vw - $container-width-lg) / 2);
+  }
+
+  @media screen and (min-width: $desktopXlBreakpoint) {
+    padding: 0 calc((100vw - $container-width-xl) / 2);
+  }
 }

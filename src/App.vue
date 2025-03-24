@@ -29,17 +29,20 @@
 
       <Accordion></Accordion>
     </main>
+
+    <Footer></Footer>
   </div>
 </template>
 
 <script setup>
 import { computed, watch } from "vue";
-import { useNavigationStore } from "./store/navigation";
+import { useNavigationStore } from "@/store/navigation";
 // components
 import ButtonMain from "@/components/ui/ButtonMain";
-import Accordion from "./components/ui/Accordion.vue";
-import Breadcrumbs from "./components/ui/Breadcrumbs.vue";
-import Header from "./components/Header.vue";
+import Accordion from "@/components/ui/Accordion.vue";
+import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
@@ -55,8 +58,8 @@ watch(isMenuActive, (value) => {
 
 <style lang="scss" scoped>
 .layout {
-  background-color: $color-deep-black;
-  padding: $header-height-mobile 0 100px; //временный отступ снизу
+  background-color: $color-black-1;
+  padding-top: $header-height-mobile;
 }
 
 @media screen and (min-width: $desktopSmBreakpoint) {
@@ -66,9 +69,9 @@ watch(isMenuActive, (value) => {
 }
 
 main {
-  padding: 0 16px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  @include container;
 }
 </style>

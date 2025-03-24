@@ -84,7 +84,8 @@ module.exports = {
     extensions: [".js", ".vue", ".json", ".scss"],
   },
   devServer: {
-    static: path.resolve(__dirname, "dist"),
+    static: [path.resolve(__dirname, "dist")],
+    static: [path.resolve(__dirname, "public")],
     hot: true,
     host: "0.0.0.0",
     allowedHosts: "all",

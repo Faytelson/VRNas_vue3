@@ -1,13 +1,7 @@
 <template>
   <header class="header">
     <div v-if="isMobile" class="header__mobile">
-      <a href="#" class="main-logo">
-        <img
-          src="@/assets/images/logo.png"
-          alt="Логотип компании VRNas"
-          class="main-logo__img"
-        />
-      </a>
+      <Logo></Logo>
 
       <Burger @click="toggleMenu" :isActive="isMenuActive"></Burger>
 
@@ -27,13 +21,7 @@
     </div>
 
     <div v-else class="header__desktop">
-      <a href="#" class="main-logo">
-        <img
-          src="@/assets/images/logo.png"
-          alt="Логотип компании VRNas"
-          class="main-logo__img"
-        />
-      </a>
+      <Logo></Logo>
 
       <nav class="desktop-nav">
         <div class="desktop-nav__menu">
@@ -58,6 +46,7 @@ import { ref, computed, watch, onMounted } from "vue";
 import { useWindowSize } from "@vueuse/core";
 import gsap from "gsap";
 // components
+import Logo from "./Logo.vue";
 import Burger from "./ui/Burger.vue";
 import ButtonMain from "./ui/ButtonMain.vue";
 import Menu from "./Menu.vue";
@@ -126,9 +115,9 @@ watch(isMenuActive, (newMenuStatus) => {
   left: 0;
   width: 100%;
   height: $header-height-mobile;
-  padding: 0 16px;
-  background-color: $color-deep-black;
+  background-color: $color-black-1;
   z-index: 999;
+  @include container;
 
   &__mobile {
     width: 100%;
@@ -141,12 +130,6 @@ watch(isMenuActive, (newMenuStatus) => {
   &__desktop {
     display: none;
   }
-}
-
-.main-logo {
-  width: 101px;
-  min-width: 101px;
-  height: 30px;
 }
 
 .mobile-nav {
