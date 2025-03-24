@@ -47,7 +47,7 @@ module.exports = {
         loader: "html-loader",
       },
       {
-        test: /\.(png|jpe?g|gif|webp|avif)$/,
+        test: /\.(png|jpe?g|gif|webp|avif|svg)$/,
         type: "asset/resource",
         generator: {
           filename: "images/[name].[hash:8][ext]",

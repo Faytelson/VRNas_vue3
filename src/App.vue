@@ -72,6 +72,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  margin-bottom: 50px;
   @include container;
 }
 </style>

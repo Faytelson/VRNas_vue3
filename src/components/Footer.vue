@@ -1,6 +1,8 @@
 <template>
   <footer class="footer">
-    <div class="footer__subscribe-form subscribe-form">здесь будет форма</div>
+    <div class="footer__subscribe-form subscribe-form">
+      <Form></Form>
+    </div>
 
     <nav class="footer__nav">
       <div class="footer__brand-socials">
@@ -69,6 +71,7 @@ import { useNavigationStore } from "../store/navigation";
 // components
 import Logo from "./Logo.vue";
 import Socials from "./Socials.vue";
+import Form from "./ui/Form.vue";
 
 const navigationStore = useNavigationStore();
 </script>
@@ -81,9 +84,6 @@ const navigationStore = useNavigationStore();
 
   &__subscribe-form {
     margin-bottom: 92px;
-    color: orange;
-    background-color: rgba(0, 255, 255, 0.245);
-    height: 300px;
   }
 
   &__nav {
