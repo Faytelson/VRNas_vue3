@@ -37,7 +37,7 @@
     padding: 0 calc((100vw - $container-width-lg) / 2);
   }
 
-  @media screen and (min-width: $desktopXlBreakpoint) {
+   @media screen and (min-width: $desktopXXlBreakpoint) {
     padding: 0 calc((100vw - $container-width-xl) / 2);
   }
 }

@@ -123,7 +123,7 @@
   }
 }
 
-@media screen and (min-width: $desktopXlBreakpoint) {
+@media screen and (min-width: $desktopXXlBreakpoint) {
   .form {
     &__container {
       max-width: 600px;

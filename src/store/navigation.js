@@ -40,7 +40,7 @@ export const useNavigationStore = defineStore("navigation", () => {
   const isMenuActive = ref(false);
 
   // footer menu
-  const socialLinks = [
+  const socialLinks = ref([
     {
       title: "twitter",
       name: "twitter",
@@ -77,7 +77,7 @@ export const useNavigationStore = defineStore("navigation", () => {
       },
       id: 0,
     },
-  ];
+  ]);
 
   const footerQuickLinks = ref([
     { title: "Home", id: 0 },
