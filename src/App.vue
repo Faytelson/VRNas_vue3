@@ -28,6 +28,8 @@
       ></ButtonMain>
 
       <Accordion></Accordion>
+
+      <FeatureList></FeatureList>
     </main>
 
     <Footer></Footer>
@@ -43,6 +45,7 @@ import Accordion from "@/components/ui/Accordion.vue";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import FeatureList from "./components/lists/FeatureList.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
