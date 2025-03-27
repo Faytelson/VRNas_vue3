@@ -5,6 +5,20 @@
     <main>
       <Breadcrumbs></Breadcrumbs>
 
+      <Title
+        tag="h1"
+        type="main"
+        text="Immerse Yourself <br> in Virtual Reality"
+      ></Title>
+
+      <Title
+        tag="h2"
+        type="section-name"
+        text="Bring your events to life like never before with our VR services."
+      ></Title>
+
+      <Title tag="h3" type="description" text="About us"></Title>
+
       <ButtonMain tag="button" label="Variant 1" variant="primary"></ButtonMain>
 
       <ButtonMain
@@ -49,6 +63,7 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import FeatureList from "./components/lists/FeatureList.vue";
 import NavigationListPanel from "./components/lists/NavigationListPanel.vue";
+import Title from "./components/ui/Title.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
