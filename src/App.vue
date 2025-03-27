@@ -30,6 +30,8 @@
       <Accordion></Accordion>
 
       <FeatureList></FeatureList>
+
+      <NavigationListPanel></NavigationListPanel>
     </main>
 
     <Footer></Footer>
@@ -46,6 +48,7 @@ import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import FeatureList from "./components/lists/FeatureList.vue";
+import NavigationListPanel from "./components/lists/NavigationListPanel.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
@@ -74,7 +77,7 @@ watch(isMenuActive, (value) => {
 main {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 50px;
   margin-bottom: 50px;
   @include container;
 }

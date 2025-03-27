@@ -17,7 +17,7 @@ import { computed } from "vue";
 const props = defineProps({
   tag: {
     type: String,
-    validator: (value) => ["button", "router-link"].includes(value),
+    validator: (value) => ["button", "router-link", "p"].includes(value),
     required: true,
   },
   to: {
@@ -29,7 +29,7 @@ const props = defineProps({
   },
   variant: {
     type: String,
-    validator: (value) => ["primary", "secondary"].includes(value),
+    validator: (value) => ["primary", "secondary", "dark"].includes(value),
     required: true,
   },
   ariaLabel: {
@@ -121,6 +121,20 @@ const computedClass = computed(() => {
       &::after {
         opacity: 1;
       }
+    }
+  }
+
+  &_dark {
+    padding: 0 38px;
+    background: rgba(37, 37, 50, 0.9);
+    @include border-gradient-colored;
+
+    .button__text {
+      @include font($font-main, 14px, 700);
+      line-height: 1em;
+      color: $color-white;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
     }
   }
 
