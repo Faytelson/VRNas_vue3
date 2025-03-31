@@ -29,7 +29,23 @@ export const useListStore = defineStore("lists", () => {
     },
   ]);
 
+  const iconListAdvantagesVR = ref([
+    {
+      label: "Cutting-Edge Technology",
+      id: 0,
+    },
+    {
+      label: "Versatile Applications",
+      id: 1,
+    },
+    {
+      label: "Affordable and Accessible",
+      id: 2,
+    },
+  ]);
+
   return {
     featureListAboutUs,
+    iconListAdvantagesVR,
   };
 });

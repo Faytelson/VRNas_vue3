@@ -46,6 +46,8 @@
       <FeatureList></FeatureList>
 
       <NavigationListPanel></NavigationListPanel>
+
+      <IconList></IconList>
     </main>
 
     <Footer></Footer>
@@ -64,6 +66,7 @@ import Footer from "@/components/Footer.vue";
 import FeatureList from "./components/lists/FeatureList.vue";
 import NavigationListPanel from "./components/lists/NavigationListPanel.vue";
 import Title from "./components/ui/Title.vue";
+import IconList from "./components/lists/IconList.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
