@@ -62,7 +62,7 @@
       </div>
     </nav>
 
-    <p class="footer__copyright-info">© Copyright 2023, All Rights Reserved</p>
+    <p class="footer__copyright-info">&copy; Copyright 2023, All Rights Reserved</p>
   </footer>
 </template>
 
