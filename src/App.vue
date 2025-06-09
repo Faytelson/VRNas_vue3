@@ -5,6 +5,8 @@
     <main>
       <Breadcrumbs></Breadcrumbs>
 
+      <CountBadge title="Happy Clients" subtitle="32k+"></CountBadge>
+
       <Title
         tag="h1"
         type="main"
@@ -67,6 +69,7 @@ import FeatureList from "./components/lists/FeatureList.vue";
 import NavigationListPanel from "./components/lists/NavigationListPanel.vue";
 import Title from "./components/ui/Title.vue";
 import IconList from "./components/lists/IconList.vue";
+import CountBadge from "./components/ui/CountBadge.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);

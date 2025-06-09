@@ -1,0 +1,19 @@
+{
+  "images": [
+    {
+      "id": 0,
+      "path": "/avatars/avatar_3.png",
+      "alt": "Happy Client 1"
+    },
+    {
+      "id": 1,
+      "path": "/avatars/avatar_2.png",
+      "alt": "Happy Client 2"
+    },
+    {
+      "id": 2,
+      "path": "/avatars/avatar_1.png",
+      "alt": "Happy Client 3"
+    }
+  ]
+}
