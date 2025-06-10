@@ -5,21 +5,21 @@
     <main>
       <Breadcrumbs></Breadcrumbs>
 
+      <AccordionInfoBlock
+        :image="accordionChooseUsImage"
+        :accordionData="accordionChooseUs"
+      ></AccordionInfoBlock>
       <CountBadge title="Happy Clients" subtitle="32k+"></CountBadge>
 
-      <Title
-        tag="h1"
-        type="main"
-        text="Immerse Yourself <br> in Virtual Reality"
-      ></Title>
+      <Title tag="h1" :styles="['main']">
+        Immerse Yourself <br />in Virtual Reality
+      </Title>
 
-      <Title
-        tag="h2"
-        type="section-name"
-        text="Bring your events to life like never before with our VR services."
-      ></Title>
+      <Title tag="h2" :styles="['section-name']">
+        Bring your events to life like never before with our VR services
+      </Title>
 
-      <Title tag="h3" type="description" text="About us"></Title>
+      <Title tag="h3" :styles="['description']">About us</Title>
 
       <ButtonMain tag="button" label="Variant 1" variant="primary"></ButtonMain>
 
@@ -43,7 +43,7 @@
         :disabled="true"
       ></ButtonMain>
 
-      <Accordion></Accordion>
+      <Accordion :accordionData="accordionChooseUs" type="bordered"></Accordion>
 
       <FeatureList></FeatureList>
 
@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import { computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useNavigationStore } from "@/store/navigation";
 // components
 import ButtonMain from "@/components/ui/ButtonMain";
@@ -65,11 +65,12 @@ import Accordion from "@/components/ui/Accordion.vue";
 import Breadcrumbs from "@/components/ui/Breadcrumbs.vue";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
-import FeatureList from "./components/lists/FeatureList.vue";
-import NavigationListPanel from "./components/lists/NavigationListPanel.vue";
-import Title from "./components/ui/Title.vue";
-import IconList from "./components/lists/IconList.vue";
-import CountBadge from "./components/ui/CountBadge.vue";
+import FeatureList from "@/components/lists/FeatureList.vue";
+import NavigationListPanel from "@/components/lists/NavigationListPanel.vue";
+import Title from "@/components/ui/Title.vue";
+import IconList from "@/components/lists/IconList.vue";
+import CountBadge from "@/components/ui/CountBadge.vue";
+import AccordionInfoBlock from "@/components/AccordionInfoBlock.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
@@ -80,6 +81,23 @@ watch(isMenuActive, (value) => {
   } else {
     document.body.classList.remove("locked");
   }
+});
+
+// mock data
+const accordionChooseUsImage = {
+  src: "image_man_in_vr.png",
+  alt: "accordion image",
+};
+
+const accordionChooseUs = ref([]);
+async function fetchAccordionChooseUs() {
+  const response = await fetch("/mock-data/accordion_chooseUs.json");
+  const data = await response.json();
+  accordionChooseUs.value = data;
+}
+
+onMounted(() => {
+  fetchAccordionChooseUs();
 });
 </script>
 

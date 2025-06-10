@@ -1,16 +1,16 @@
 <template>
-  <div>
-    <component
-      :is="props.tag"
-      class="title"
-      :class="`title_${props.type}`"
-      v-html="props.text"
-    ></component>
-  </div>
+  <component :is="props.tag" class="title" :class="getStyles">
+    <slot> </slot>
+  </component>
 </template>
 
 <script setup>
 import { computed } from "vue";
+
+const getStyles = computed(() => {
+  const styles = props.styles.map((style) => `title_${style}`).join(" ");
+  return styles;
+});
 
 const props = defineProps({
   tag: {
@@ -18,14 +18,10 @@ const props = defineProps({
     validator: (value) => ["h1", "h2", "h3", "h4", "h5", "h6"].includes(value),
     required: true,
   },
-  type: {
-    type: String,
-    validator: (value) =>
-      ["main", "section-name", "description"].includes(value),
-    default: "main",
-  },
-  text: {
-    type: String,
+  styles: {
+    type: Array,
+    required: true,
+    default: () => [],
   },
 });
 </script>
@@ -54,6 +50,10 @@ const props = defineProps({
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  &_uppercase {
+    text-transform: uppercase;
   }
 }
 
