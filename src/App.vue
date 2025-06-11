@@ -2,54 +2,64 @@
   <div class="layout">
     <Header></Header>
 
-    <main>
+    <main class="main">
       <Breadcrumbs></Breadcrumbs>
 
       <AccordionInfoBlock
         :image="accordionChooseUsImage"
         :accordionData="accordionChooseUs"
       ></AccordionInfoBlock>
-      <CountBadge title="Happy Clients" subtitle="32k+"></CountBadge>
 
-      <Title tag="h1" :styles="['main']">
-        Immerse Yourself <br />in Virtual Reality
-      </Title>
+      <div class="main__container">
+        <CountBadge title="Happy Clients" subtitle="32k+"></CountBadge>
 
-      <Title tag="h2" :styles="['section-name']">
-        Bring your events to life like never before with our VR services
-      </Title>
+        <Title tag="h1" :styles="['main']">
+          Immerse Yourself <br />in Virtual Reality
+        </Title>
 
-      <Title tag="h3" :styles="['description']">About us</Title>
+        <Title tag="h2" :styles="['section-name']">
+          Bring your events to life like never before with our VR services
+        </Title>
 
-      <ButtonMain tag="button" label="Variant 1" variant="primary"></ButtonMain>
+        <Title tag="h3" :styles="['description']">About us</Title>
 
-      <ButtonMain
-        tag="button"
-        label="Variant 1"
-        variant="primary"
-        :disabled="true"
-      ></ButtonMain>
+        <ButtonMain
+          tag="button"
+          label="Variant 1"
+          variant="primary"
+        ></ButtonMain>
 
-      <ButtonMain
-        tag="button"
-        label="Variant 2"
-        variant="secondary"
-      ></ButtonMain>
+        <ButtonMain
+          tag="button"
+          label="Variant 1"
+          variant="primary"
+          :disabled="true"
+        ></ButtonMain>
 
-      <ButtonMain
-        tag="button"
-        label="Variant 2"
-        variant="secondary"
-        :disabled="true"
-      ></ButtonMain>
+        <ButtonMain
+          tag="button"
+          label="Variant 2"
+          variant="secondary"
+        ></ButtonMain>
 
-      <Accordion :accordionData="accordionChooseUs" type="bordered"></Accordion>
+        <ButtonMain
+          tag="button"
+          label="Variant 2"
+          variant="secondary"
+          :disabled="true"
+        ></ButtonMain>
 
-      <FeatureList></FeatureList>
+        <Accordion
+          :accordionData="accordionChooseUs"
+          type="bordered"
+        ></Accordion>
 
-      <NavigationListPanel></NavigationListPanel>
+        <FeatureList></FeatureList>
 
-      <IconList></IconList>
+        <NavigationListPanel></NavigationListPanel>
+
+        <IconList></IconList>
+      </div>
     </main>
 
     <Footer></Footer>
@@ -113,11 +123,18 @@ onMounted(() => {
   }
 }
 
-main {
+// временные стили для тестирования
+.main {
   display: flex;
   flex-direction: column;
   gap: 50px;
   margin-bottom: 50px;
-  @include container;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    @include container;
+  }
 }
 </style>

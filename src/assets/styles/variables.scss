@@ -3,6 +3,19 @@
 $color-linear: linear-gradient(to right, #0cbaf1, #e95ce9);
 $color-purple: #ca6aeb;
 $color-blue: #19b5f1;
+$color-dark-gradient: 
+  linear-gradient(
+    to bottom,
+    #18181b 0%,
+    #241c27 10%,
+    #312337 20%,
+    #3e2a47 30%,
+    #442d4e 40%,
+    #3e2a47 60%,
+    #312337 70%,
+    #241c27 80%,
+    #18181b 100%
+  );
 
 // color alerts
 $color-success: #00c566;
@@ -21,6 +34,7 @@ $color-white: #ffffff;
 // UI
 $font-main: "Chakra Petch", sans-serif;
 $transition-main: 0.3s ease;
+$transition-ui: 0.4s ease-in;
 
 $header-height-mobile: 82px;
 $header-height-desktop: 102px;
@@ -43,4 +57,3 @@ $desktopMdBreakpoint: 1280px;
 $desktopLgBreakpoint: 1440px;
 $desktopXlBreakpoint: 1920px;
 $desktopXXlBreakpoint: 2560px;
-

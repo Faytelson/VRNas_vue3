@@ -105,7 +105,7 @@ const animateClose = (elem) => {
       .accordion__header {
         &::after {
           transform: translateY(-50%) rotate(180deg);
-          transition: transform 0.4s ease-in;
+          transition: transform $transition-ui;
         }
       }
     }
@@ -127,7 +127,7 @@ const animateClose = (elem) => {
       height: 8px;
       background: url("@/assets/images/icons/icon_arrow_down.svg") center /
         contain no-repeat;
-      transition: transform 0.4s ease-in;
+      transition: transform $transition-ui;
     }
   }
 
@@ -142,7 +142,6 @@ const animateClose = (elem) => {
 
   &__content {
     height: 0;
-    position: relative;
   }
 
   &__text {
@@ -164,13 +163,6 @@ const animateClose = (elem) => {
 
       &_active {
         @include border-gradient-colored;
-
-        .accordion__header {
-          &::after {
-            transform: translateY(-50%) rotate(180deg);
-            transition: transform 0.4s ease-in;
-          }
-        }
       }
     }
 
@@ -184,12 +176,10 @@ const animateClose = (elem) => {
         @include pseudo;
         top: 50%;
         right: 0;
-        transform: translateY(-50%);
         width: 12px;
         height: 12px;
         background: url("@/assets/images/icons/icon_arrow_down.svg") center /
           contain no-repeat;
-        transition: transform 0.4s ease-in;
       }
     }
 
@@ -200,6 +190,8 @@ const animateClose = (elem) => {
     }
 
     .accordion__content {
+      position: relative;
+      
       &::before {
         @include pseudo;
         top: 0;
@@ -219,34 +211,35 @@ const animateClose = (elem) => {
 
 @media screen and (min-width: $tabletSmBreakpoint) {
   .accordion {
-    &__item {
-      padding: 0 24px;
-    }
-
-    &__header {
-      height: 74px;
-    }
-
-    &__title {
-      @include font($font-main, 20px, 500);
-    }
-
-    &__content {
-      line-height: 1.75em;
-      padding: 12px 0 32px 0;
-
-      &::before {
-        @include pseudo;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background-color: rgba(255, 255, 255, 0.35);
+    &_bordered {
+      .accordion__item {
+        padding: 0 24px;
       }
-    }
 
-    &__text {
-      font-size: 16px;
+      .accordion__header {
+        height: 74px;
+      }
+
+      .accordion__title {
+        @include font($font-main, 20px, 500);
+      }
+
+      .accordion__content {
+        &::before {
+          @include pseudo;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background-color: rgba(255, 255, 255, 0.35);
+        }
+      }
+
+      .accordion__text {
+        font-size: 16px;
+        line-height: 1.75em;
+        padding: 12px 0 32px 0;
+      }
     }
   }
 }
