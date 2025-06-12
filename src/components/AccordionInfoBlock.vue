@@ -1,5 +1,5 @@
 <template>
-  <div class="accordion-info-block">
+  <div class="accordion-info-block" :class="getType">
     <div class="accordion-info-block__visual-section">
       <img
         :src="require(`@/assets/images/${image.src}`)"
@@ -40,6 +40,13 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  type: {
+    type: String,
+  },
+});
+
+const getType = computed(() => {
+  if (props.type) return `accordion-info-block_${props.type}`;
 });
 </script>
 
@@ -101,7 +108,7 @@ const props = defineProps({
 @media screen and (min-width: $desktopSmBreakpoint) {
   .accordion-info-block {
     display: grid;
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: 400px 1fr;
     gap: 80px;
     @include container;
 
@@ -122,12 +129,24 @@ const props = defineProps({
       min-width: 0;
       padding: 0;
     }
+
+    &_reverse {
+      grid-template-columns: 1fr 400px;
+
+      .accordion-info-block__content-section {
+        order: -1;
+      }
+    }
   }
 }
 
 @media screen and (min-width: $desktopMdBreakpoint) {
   .accordion-info-block {
     grid-template-columns: 500px 1fr;
+
+    &_reverse {
+      grid-template-columns: 1fr 500px;
+    }
   }
 }
 </style>

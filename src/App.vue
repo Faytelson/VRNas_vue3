@@ -10,6 +10,12 @@
         :accordionData="accordionChooseUs"
       ></AccordionInfoBlock>
 
+      <AccordionInfoBlock
+        :image="accordionChooseUs2Image"
+        :accordionData="accordionChooseUs"
+        type="reverse"
+      ></AccordionInfoBlock>
+
       <div class="main__container">
         <CountBadge title="Happy Clients" subtitle="32k+"></CountBadge>
 
@@ -96,6 +102,11 @@ watch(isMenuActive, (value) => {
 // mock data
 const accordionChooseUsImage = {
   src: "image_man_in_vr.png",
+  alt: "accordion image",
+};
+
+const accordionChooseUs2Image = {
+  src: "image_man_in_vr_2.png",
   alt: "accordion image",
 };
 
