@@ -60,6 +60,13 @@ module.exports = {
           filename: "fonts/[name].[hash:8][ext]",
         },
       },
+      {
+        test: /\.(mp4|webm|ogg)$/i,
+        type: "asset/resource",
+        generator: {
+          filename: "videos/[name][hash][ext]",
+        },
+      },
     ],
   },
   plugins: [

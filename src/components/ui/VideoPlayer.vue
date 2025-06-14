@@ -1,115 +1,242 @@
 <template>
-  <section class="video-player" aria-label="video player">
-    <div class="video-player__media-wrapper">
+  <section
+    v-if="videoData"
+    class="video-player"
+    aria-label="video player"
+    ref="videoPlayerRef"
+  >
+    <div class="video-player__container">
       <video
         class="video-player__video"
-        :aria-label="description"
+        :aria-label="videoData.description"
         preload="metadata"
         tabindex="0"
+        :poster="videoData.poster"
         @keydown="handleKeydown"
-        :ref="videoRef"
+        ref="videoRef"
         @click="togglePlayback"
       >
-        <source :src="source" type="video/mp4" />
+        <source :src="videoData.source" type="video/mp4" />
       </video>
-      <div class="video-player__poster" v-if="poster">
-        <img :src="poster.img.src" :alt="poster.img.alt" />
-        <p class="video-player__subtitle">{{ poster.subtitle }}</p>
-        <h3 class="video-player__title">{{ poster.title }}</h3>
-      </div>
-    </div>
 
-    <div class="video-player__controls">
-      <button
-        class="video-player__button-toggle-playback"
-        :aria-pressed="isPlaying.toString()"
-        :aria-label="isPlaying ? 'Pause video' : 'Play video'"
-        @click="togglePlayback"
-      >
-        <svg
-          v-if="isPlaying"
-          class="video-player__pause-icon"
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+      <div class="video-player__controls">
+        <button
+          class="video-player__button-toggle-playback"
+          :aria-pressed="isPlaying.toString()"
+          :aria-label="isPlaying ? 'Pause video' : 'Play video'"
+          @click="togglePlayback"
         >
-          <circle cx="20" cy="20" r="20" fill="rgba(255, 255, 255, 0.3)" />
+          <svg
+            class="video-player__pause-icon"
+            :class="isPlaying ? 'video-player__pause-icon_active' : ''"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="20" cy="20" r="20" fill="rgba(255, 255, 255, 0.3)" />
 
-          <rect x="13" y="12" width="4" height="16" rx="1" fill="white" />
+            <rect x="13" y="12" width="4" height="16" rx="1" fill="white" />
 
-          <rect x="23" y="12" width="4" height="16" rx="1" fill="white" />
-        </svg>
+            <rect x="23" y="12" width="4" height="16" rx="1" fill="white" />
+          </svg>
 
-        <svg
-          v-else
-          class="video-player__play-icon"
-          width="40"
-          height="40"
-          viewBox="0 0 40 40"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M20 40C31.0457 40 40 31.0457 40 20C40 8.9543 31.0457 0 20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40ZM16.875 27.3361L28.125 21.048C28.9583 20.5822 28.9583 19.4178 28.125 18.952L16.875 12.6639C16.0417 12.1982 15 12.7804 15 13.7119L15 26.2881C15 27.2196 16.0417 27.8018 16.875 27.3361Z"
-            fill="white"
-            fill-opacity="0.3"
-          />
-        </svg>
-      </button>
+          <svg
+            class="video-player__play-icon"
+            :class="!isPlaying ? 'video-player__play-icon_active' : ''"
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M20 40C31.0457 40 40 31.0457 40 20C40 8.9543 31.0457 0 20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40ZM16.875 27.3361L28.125 21.048C28.9583 20.5822 28.9583 19.4178 28.125 18.952L16.875 12.6639C16.0417 12.1982 15 12.7804 15 13.7119L15 26.2881C15 27.2196 16.0417 27.8018 16.875 27.3361Z"
+              fill="white"
+              fill-opacity="0.7"
+            />
+          </svg>
+        </button>
 
-      <div class="video-player__progress">
-        <div class="video-player__time" role="timer" aria-live="off">
-          <span aria-label="Current time">{{ formattedCurrentTime }}</span>
-          <span aria-hidden="true">/</span>
-          <span aria-label="Total duration">{{ formattedDuration }}</span>
+        <div class="video-player__bottom-panel">
+          <div class="video-player__progress">
+            <div class="video-player__time" role="timer" aria-live="off">
+              <span
+                aria-label="Current time"
+                class="video-player__time-label"
+                >{{ formattedCurrentTime }}</span
+              >
+              <span aria-hidden="true" class="video-player__time-separator"
+                >/</span
+              >
+              <span
+                aria-label="Total duration"
+                class="video-player__time-label"
+                >{{ formattedDuration }}</span
+              >
+            </div>
+
+            <input
+              type="range"
+              class="video-player__progress-bar"
+              :value="currentTime"
+              min="0"
+              :max="duration"
+              step="0.1"
+              aria-label="Video progress"
+              :aria-valuenow="currentTime"
+              aria-valuemin="0"
+              :aria-valuemax="duration"
+              @input="updatePlaybackTime"
+            />
+          </div>
+
+          <button
+            class="video-player__button-toggle-fullscreen"
+            aria-label="Toggle fullscreen video"
+            @click="toggleFullscreen"
+          >
+            <svg
+              class="video-player__fullscreen-icon"
+              :class="
+                isVideoPlayerFullscreen
+                  ? ''
+                  : 'video-player__fullscreen-icon_active'
+              "
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="20" cy="20" r="20" fill="rgba(255, 255, 255, 0.3)" />
+              <path d="M14 14V10H10V14H12V12H14Z" fill="white" />
+              <path d="M26 14H28V10H24V12H26V14Z" fill="white" />
+              <path d="M14 26H12V28H16V26H14Z" fill="white" />
+              <path d="M28 26V28H24V26H26V24H28Z" fill="white" />
+            </svg>
+
+            <svg
+              class="video-player__exit-fullscreen-icon"
+              :class="
+                isVideoPlayerFullscreen
+                  ? 'video-player__exit-fullscreen-icon_active'
+                  : ''
+              "
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="20" cy="20" r="20" fill="rgba(255, 255, 255, 0.3)" />
+              <path d="M14 14H16V16H14V14Z" fill="white" />
+              <path d="M26 14H24V16H26V14Z" fill="white" />
+              <path d="M14 26H16V24H14V26Z" fill="white" />
+              <path d="M26 26H24V24H26V26Z" fill="white" />
+            </svg>
+          </button>
         </div>
 
-        <input
-          v-if="currentTime"
-          type="range"
-          class="video-player__progress-bar"
-          :value="currentTime.value"
-          min="0"
-          :max="duration"
-          step="0.1"
-          aria-label="Video progress"
-          :aria-valuenow="currentTime.value"
-          aria-valuemin="0"
-          :aria-valuemax="duration"
-          @input="updatePlaybackTime"
-        />
+        <div class="video-player__info">
+          <p class="video-player__subtitle">{{ videoData.info.subtitle }}</p>
+          <h3 class="video-player__title">{{ videoData.info.title }}</h3>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, computed, watch } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 
 const props = defineProps({
-  description: {
-    type: String,
-  },
-  source: {
-    type: String,
-  },
-  poster: {
+  videoData: {
     type: Object,
   },
 });
 
 const videoRef = ref(null);
+const videoPlayerRef = ref(null);
 const isPlaying = ref(false);
+const currentTime = ref(0);
+const duration = ref(0);
+
+const formattedDuration = computed(() => {
+  return formatTime(duration.value);
+});
+const formattedCurrentTime = computed(() => {
+  return formatTime(currentTime.value);
+});
+
+function formatTime(floatValueSeconds) {
+  const totalSeconds = floatValueSeconds.toFixed(0);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  function addZero(value) {
+    return value >= 10 ? value : `0${value}`;
+  }
+
+  return `${addZero(minutes)}:${addZero(seconds)}`;
+}
 
 function togglePlayback() {
   videoRef.value.paused ? videoRef.value.play() : videoRef.value.pause();
 }
 
-function addEventListeners() {
+function updatePlaybackTime(value) {
+  videoRef.value.currentTime = value;
+}
+const isVideoPlayerFullscreen = ref(false);
+
+function toggleFullscreen() {
+  if (!document.fullscreenEnabled) {
+    console.log("Fullscreen is disabled for your browser");
+    return;
+  }
+
+  if (!videoPlayerRef.value) {
+    console.log("No available video player found");
+    return;
+  }
+
+  isVideoPlayerFullscreen.value =
+    document.fullscreenElement === videoPlayerRef.value;
+  console.log(isVideoPlayerFullscreen.value);
+
+  if (isVideoPlayerFullscreen.value) {
+    document
+      .exitFullscreen()
+      .then(() => {
+        console.log("Fullscreen exit");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    videoPlayerRef.value
+      .requestFullscreen()
+      .then(() => {
+        console.log("Fullscreen enabled");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+}
+
+function addFullscreenListeners() {
+  document.addEventListener("fullscreenchange", () => {
+    isVideoPlayerFullscreen.value =
+      document.fullscreenElement === videoPlayerRef.value;
+  });
+}
+
+function addVideoEventListeners() {
   videoRef.value.addEventListener("play", () => (isPlaying.value = true));
   videoRef.value.addEventListener("pause", () => (isPlaying.value = false));
   videoRef.value.addEventListener(
@@ -121,25 +248,75 @@ function addEventListeners() {
   });
 }
 
-watch(videoRef, (newVal) => {
-  if (newVal) addEventListeners();
+watch(videoRef, (newVal, oldVal) => {
+  if (newVal) {
+    addVideoEventListeners();
+  }
+});
+
+onMounted(() => {
+  addFullscreenListeners();
 });
 </script>
 
 <style lang="scss" scoped>
 .video-player {
-  &:focus-visible {
-    outline: 2px solid red; //временные стили для управления с клавиатуры
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+
+  &__container {
+    position: relative;
+    width: 100%;
+    max-height: 100%;
+    aspect-ratio: 16 / 9;
+
+    // &:focus-visible {
+    // outline: 2px solid red; временные стили для управления с клавиатуры
+    // }
+  }
+
+  &__video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+  }
+
+  &__bottom-panel {
+    position: absolute;
+    max-width: 100%;
+    top: auto;
+    bottom: 12px;
+    left: 8px;
+    right: 8px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 10px;
   }
 
   &__button-toggle-playback {
-    width: 40px;
-    height: 40px;
-    transition: transform $transition-ui;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
 
-    &:hover {
-      transform: scale(1.1);
-    }
+    // &:hover {
+    // transform: translate(-50%, -50%) scale(1.1); переместить в десктоп
+    // }
 
     &:focus-visible {
       outline: 2px solid red; //временные стили для управления с клавиатуры
@@ -148,29 +325,167 @@ watch(videoRef, (newVal) => {
 
   &__pause-icon,
   &__play-icon {
-    fill: rgba(255, 255, 255, 0.3);
-    transition: fill $transition-ui;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: contain;
     transition: opacity $transition-ui;
+    opacity: 0;
 
-    &:hover {
-      fill: rgba(255, 255, 255, 0.7);
+    &_active {
+      opacity: 1;
     }
   }
 
-  &__pause-icon {
-    opacity: v-bind('isPlaying ? "1" : "0"');
+  &__button-toggle-fullscreen {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    pointer-events: auto;
+    flex-shrink: 0;
   }
 
-  &__play-icon {
-    opacity: v-bind('isPlaying ? "0" : "1"');
+  &__fullscreen-icon,
+  &__exit-fullscreen-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity $transition-main;
+
+    &_active {
+      opacity: 1;
+    }
+  }
+
+  &__progress {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  &__time {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    @include font($font-main, 12px, 500);
+    color: $color-white;
+  }
+
+  &__time-label {
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__progress-bar {
+    flex-grow: 1;
+    pointer-events: auto;
+
     &:focus-visible {
       outline: 2px solid red; //временные стили для управления с клавиатуры
+    }
+  }
+
+  &__info {
+    position: absolute;
+    top: 11px;
+    left: 8px;
+  }
+
+  &__subtitle {
+    @include font($font-main, 12px, 500);
+    line-height: 1em;
+    color: $color-white;
+    border-radius: 8px;
+    padding: 4px 5px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.3);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+
+  &__title {
+    @include font($font-main, 14px, 500);
+    line-height: 1.5em;
+    color: $color-white;
+  }
+}
+
+@media screen and (min-width: $mobileMdBreakpoint) {
+  .video-player {
+    &__bottom-panel {
+      left: 16px;
+      right: 16px;
+      gap: 15px;
+    }
+
+    &__button-toggle-fullscreen {
+      width: 35px;
+      height: 35px;
+    }
+
+    &__progress {
+      gap: 15px;
+    }
+
+    &__time {
+      gap: 2px;
+    }
+
+    &__time-label {
+      width: 34px;
+    }
+
+    &__info {
+      top: 16px;
+      left: 16px;
+    }
+
+    &__title {
+      font-size: 16px;
+    }
+  }
+}
+
+@media screen and (min-width: $mobileLgBreakpoint) {
+  .video-player {
+    &__button-toggle-fullscreen {
+      width: 40px;
+      height: 40px;
+    }
+
+    &__time {
+      font-size: 14px;
+    }
+
+    &__time-label {
+      width: 40px;
+    }
+
+    &__info {
+      top: 24px;
+    }
+
+    &__subtitle {
+      font-size: 14px;
+      line-height: 1.2em;
+      border-radius: 16px;
+      padding: 4px 10px;
+      height: 24px;
+      margin-bottom: 8px;
+    }
+
+    &__title {
+      font-size: 20px;
     }
   }
 }

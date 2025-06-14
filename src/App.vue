@@ -17,11 +17,7 @@
       ></AccordionInfoBlock>
 
       <div class="main__container">
-        <VideoPlayer
-          :source="videoSource"
-          :description="videoDescription"
-          :poster="videoPoster"
-        ></VideoPlayer>
+        <VideoPlayer :videoData="videoData"></VideoPlayer>
         <CountBadge title="Happy Clients" subtitle="32k+"></CountBadge>
 
         <Title tag="h1" :styles="['main']">
@@ -93,6 +89,7 @@ import IconList from "@/components/lists/IconList.vue";
 import CountBadge from "@/components/ui/CountBadge.vue";
 import AccordionInfoBlock from "@/components/AccordionInfoBlock.vue";
 import VideoPlayer from "./components/ui/VideoPlayer.vue";
+import myVideo from "@/assets/videos/video-girl-vr.mp4";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
@@ -105,7 +102,8 @@ watch(isMenuActive, (value) => {
   }
 });
 
-// mock data
+// MOCK DATA
+// accordions
 const accordionChooseUsImage = {
   src: "image_man_in_vr.png",
   alt: "accordion image",
@@ -123,16 +121,14 @@ async function fetchAccordionChooseUs() {
   accordionChooseUs.value = data;
 }
 
-const videoSource = ref(null);
-const videoDescription = ref(null);
-const videoPoster = ref(null);
+// video
+const videoData = ref(null);
 
 async function fetchVideoData() {
   const response = await fetch("/mock-data/videoData.json");
   const data = await response.json();
-  videoSource.value = data.source;
-  videoDescription.value = data.description;
-  videoPoster.value = data.poster;
+  data.source = myVideo;
+  videoData.value = data;
 }
 
 onMounted(() => {

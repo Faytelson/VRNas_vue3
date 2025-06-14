@@ -1,18 +1,9 @@
 {
-  "source": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-  "description": "Big Buck Bunny демонстрационное видео",
-  "poster": {
-    "img": {
-      "src": "https://peach.blender.org/wp-content/uploads/bbb-splash.png",
-      "alt": "Постер Big Buck Bunny"
-    },
-    "title": "Big Buck Bunny",
-    "subtitle": "Blender Foundation, 2008"
-  },
-  "formats": [
-    {
-      "type": "video/mp4",
-      "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-    }
-  ]
+  "source": "video-girl-vr.mp4",
+  "description": "Demonstration video",
+  "poster": "https://cdn.pixabay.com/photo/2024/03/13/07/00/ai-generated-8630221_1280.jpg",
+  "info": {
+    "title": "How to get started",
+    "subtitle": "VR Service"
+  }
 }
