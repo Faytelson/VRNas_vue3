@@ -115,7 +115,7 @@
               <circle cx="20" cy="20" r="20" fill="rgba(255, 255, 255, 0.3)" />
               <path d="M14 14V10H10V14H12V12H14Z" fill="white" />
               <path d="M26 14H28V10H24V12H26V14Z" fill="white" />
-              <path d="M14 26H12V28H16V26H14Z" fill="white" />
+              <path d="M10 24V28H14V26H12V24H10Z" fill="white" />
               <path d="M28 26V28H24V26H26V24H28Z" fill="white" />
             </svg>
 
@@ -151,7 +151,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, watch } from "vue";
+import {
+  onMounted,
+  nextTick,
+  ref,
+  computed,
+  watch,
+  onBeforeUnmount,
+} from "vue";
 
 const props = defineProps({
   videoData: {
@@ -188,74 +195,91 @@ function togglePlayback() {
   videoRef.value.paused ? videoRef.value.play() : videoRef.value.pause();
 }
 
-function updatePlaybackTime(value) {
-  videoRef.value.currentTime = value;
+function updatePlaybackTime(evt) {
+  videoRef.value.currentTime = evt.target.value;
+  console.log(evt.target.value)
 }
 const isVideoPlayerFullscreen = ref(false);
 
 function toggleFullscreen() {
   if (!document.fullscreenEnabled) {
-    console.log("Fullscreen is disabled for your browser");
+    console.log("Fullscreen unsupported");
     return;
   }
 
   if (!videoPlayerRef.value) {
-    console.log("No available video player found");
+    console.log("Player missing");
     return;
   }
 
+  if (document.fullscreenElement === videoPlayerRef.value) {
+    document.exitFullscreen().catch((err) => {
+      console.log(err);
+    });
+  } else {
+    videoPlayerRef.value.requestFullscreen().catch((err) => {
+      console.log(err);
+    });
+  }
+}
+
+const onPlayVideo = () => {
+  isPlaying.value = true;
+};
+
+const onPauseVideo = () => {
+  isPlaying.value = false;
+};
+
+const onLoadedMetadata = () => {
+  duration.value = videoRef.value.duration;
+};
+
+const onTimeUpdate = () => {
+  currentTime.value = videoRef.value.currentTime;
+};
+
+const onScreenChange = () => {
   isVideoPlayerFullscreen.value =
     document.fullscreenElement === videoPlayerRef.value;
-  console.log(isVideoPlayerFullscreen.value);
-
-  if (isVideoPlayerFullscreen.value) {
-    document
-      .exitFullscreen()
-      .then(() => {
-        console.log("Fullscreen exit");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  } else {
-    videoPlayerRef.value
-      .requestFullscreen()
-      .then(() => {
-        console.log("Fullscreen enabled");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-}
-
-function addFullscreenListeners() {
-  document.addEventListener("fullscreenchange", () => {
-    isVideoPlayerFullscreen.value =
-      document.fullscreenElement === videoPlayerRef.value;
-  });
-}
+};
 
 function addVideoEventListeners() {
-  videoRef.value.addEventListener("play", () => (isPlaying.value = true));
-  videoRef.value.addEventListener("pause", () => (isPlaying.value = false));
-  videoRef.value.addEventListener(
-    "loadedmetadata",
-    () => (duration.value = videoRef.value.duration)
-  );
-  videoRef.value.addEventListener("timeupdate", () => {
-    currentTime.value = videoRef.value.currentTime;
-  });
+  videoRef.value.addEventListener("play", onPlayVideo);
+  videoRef.value.addEventListener("pause", onPauseVideo);
+  videoRef.value.addEventListener("loadedmetadata", onLoadedMetadata);
+  videoRef.value.addEventListener("timeupdate", onTimeUpdate);
 }
 
-watch(videoRef, (newVal, oldVal) => {
-  if (newVal) {
-    addVideoEventListeners();
-  }
+function removeVideoEventListeners() {
+  videoRef.value.removeEventListener("play", onPlayVideo);
+  videoRef.value.removeEventListener("pause", onPauseVideo);
+  videoRef.value.removeEventListener("loadedmetadata", onLoadedMetadata);
+  videoRef.value.removeEventListener("timeupdate", onTimeUpdate);
+}
+
+watch(
+  () => props.videoData,
+  async (newVal) => {
+    if (newVal) {
+      await nextTick();
+      if (videoRef.value) {
+        addVideoEventListeners();
+      }
+    }
+  },
+  { immediate: true }
+);
+
+onMounted(async () => {
+  document.addEventListener("fullscreenchange", onScreenChange);
 });
 
-onMounted(() => {
-  addFullscreenListeners();
+onBeforeUnmount(() => {
+  document.removeEventListener("fullscreenchange", onScreenChange);
+  if (videoRef.value) {
+    removeVideoEventListeners();
+  }
 });
 </script>
 
