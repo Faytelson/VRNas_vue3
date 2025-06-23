@@ -214,30 +214,10 @@ const onPauseVideo = () => {
   showControls();
 };
 
-// progress
+// time update
 const totalVideoDuration = ref(0);
 const currentTime = ref(0);
 const progressValueRef = ref(null);
-
-const formattedTotalVideoDuration = computed(() => {
-  return formatTime(totalVideoDuration.value);
-});
-
-const formattedCurrentTime = computed(() => {
-  return formatTime(currentTime.value);
-});
-
-const formatTime = (floatValueSeconds) => {
-  const totalSeconds = floatValueSeconds.toFixed(0);
-  const minutes = Math.floor(totalSeconds / 60);
-  const seconds = totalSeconds % 60;
-
-  function addZero(value) {
-    return value >= 10 ? value : `0${value}`;
-  }
-
-  return `${addZero(minutes)}:${addZero(seconds)}`;
-};
 
 function onPlaybackTimeInput(evt) {
   videoElementRef.value.currentTime = evt.target.value;
@@ -257,6 +237,27 @@ const updateProgressBar = () => {
 // function handleSeekStart(evt) {
 //   console.log(evt);
 // }
+
+// formatted time output
+const formattedTotalVideoDuration = computed(() => {
+  return formatTime(totalVideoDuration.value);
+});
+
+const formattedCurrentTime = computed(() => {
+  return formatTime(currentTime.value);
+});
+
+const formatTime = (floatValueSeconds) => {
+  const roundedValueSeconds = Math.round(floatValueSeconds);
+  const minutes = Math.floor(roundedValueSeconds / 60);
+  const seconds = roundedValueSeconds % 60;
+
+  function addZero(value) {
+    return value >= 10 ? value : `0${value}`;
+  }
+
+  return `${addZero(minutes)}:${addZero(seconds)}`;
+};
 
 // fullscreen
 const videoPlayerRef = ref(null);
