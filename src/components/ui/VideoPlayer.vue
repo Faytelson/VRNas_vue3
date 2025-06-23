@@ -10,7 +10,7 @@
       @mouseenter="handleControls"
       @mousemove="handleControls"
       @touchstart="handleControls"
-      @mouseleave="handleFadeOnLeave"
+      @mouseleave="hideControls(controlsFadeOnLeave)"
     >
       <video
         class="video-player__video"
@@ -19,7 +19,7 @@
         tabindex="0"
         :poster="videoData.poster"
         @keydown="handleKeydown"
-        ref="videoRef"
+        ref="videoElementRef"
         @click="togglePlayback"
       >
         <source :src="videoData.source" type="video/mp4" />
@@ -82,7 +82,7 @@
                 <span
                   aria-label="Total duration"
                   class="video-player__time-label"
-                  >{{ formattedDuration }}</span
+                  >{{ formattedTotalVideoDuration }}</span
                 >
               </div>
 
@@ -92,12 +92,12 @@
                   class="video-player__progress-input"
                   :value="currentTime"
                   min="0"
-                  :max="duration"
+                  :max="totalVideoDuration"
                   step="0.1"
                   aria-label="Video progress"
                   :aria-valuenow="currentTime"
                   aria-valuemin="0"
-                  :aria-valuemax="duration"
+                  :aria-valuemax="totalVideoDuration"
                   @input="onPlaybackTimeInput"
                 />
                 <div
@@ -190,26 +190,37 @@ const props = defineProps({
   },
 });
 
-const videoRef = ref(null);
-const videoPlayerRef = ref(null);
-const progressValueRef = ref(null);
+// video element
+const videoElementRef = ref(null);
+
+// metadata settings
+const onLoadedMetadata = () => {
+  totalVideoDuration.value = videoElementRef.value.duration;
+};
+
+// play/pause settings
 const isPlaying = ref(false);
-const currentTime = ref(0);
-const duration = ref(0);
-const isVideoPlayerFullscreen = ref(false);
-const isShowControls = ref(true);
-let controlsTimer;
-const controlsFadeOnLeave = 1000;
-const controlsFadeOnIdle = 3000;
 
 function togglePlayback() {
-  videoRef.value.paused ? videoRef.value.play() : videoRef.value.pause();
+  videoElementRef.value.paused ? videoElementRef.value.play() : videoElementRef.value.pause();
 }
 
-// PROGRESS
-// time
-const formattedDuration = computed(() => {
-  return formatTime(duration.value);
+const onPlayVideo = () => {
+  isPlaying.value = true;
+};
+
+const onPauseVideo = () => {
+  isPlaying.value = false;
+  showControls();
+};
+
+// progress
+const totalVideoDuration = ref(0);
+const currentTime = ref(0);
+const progressValueRef = ref(null);
+
+const formattedTotalVideoDuration = computed(() => {
+  return formatTime(totalVideoDuration.value);
 });
 
 const formattedCurrentTime = computed(() => {
@@ -228,14 +239,18 @@ const formatTime = (floatValueSeconds) => {
   return `${addZero(minutes)}:${addZero(seconds)}`;
 };
 
-// progress-bar
 function onPlaybackTimeInput(evt) {
-  videoRef.value.currentTime = evt.target.value;
+  videoElementRef.value.currentTime = evt.target.value;
 }
+
+const onTimeUpdate = () => {
+  currentTime.value = videoElementRef.value.currentTime;
+  updateProgressBar();
+};
 
 const updateProgressBar = () => {
   progressValueRef.value.style.width = `${
-    (currentTime.value / duration.value) * 100
+    (currentTime.value / totalVideoDuration.value) * 100
   }%`;
 };
 
@@ -244,6 +259,9 @@ const updateProgressBar = () => {
 // }
 
 // fullscreen
+const videoPlayerRef = ref(null);
+const isVideoPlayerFullscreen = ref(false);
+
 function toggleFullscreen() {
   if (!document.fullscreenEnabled) {
     console.log("Fullscreen unsupported");
@@ -266,15 +284,20 @@ function toggleFullscreen() {
   }
 }
 
+const onScreenChange = () => {
+  isVideoPlayerFullscreen.value =
+    document.fullscreenElement === videoPlayerRef.value;
+};
+
 // show/hide controls
+const isShowControls = ref(true);
+const controlsFadeOnLeave = 1000;
+const controlsFadeOnIdle = 3000;
+let controlsTimer;
 
 function handleControls() {
   showControls();
   hideControls(controlsFadeOnIdle);
-}
-
-function handleFadeOnLeave() {
-  hideControls(controlsFadeOnLeave);
 }
 
 function showControls() {
@@ -287,7 +310,7 @@ function showControls() {
 function hideControls(fadeDuration) {
   if (
     !isPlaying.value ||
-    duration.value - currentTime.value <= fadeDuration / 1000
+    totalVideoDuration.value - currentTime.value <= fadeDuration / 1000
   ) {
     clearTimeout(controlsTimer);
     return;
@@ -299,41 +322,18 @@ function hideControls(fadeDuration) {
 }
 
 //  listeners
-const onPlayVideo = () => {
-  isPlaying.value = true;
-};
-
-const onPauseVideo = () => {
-  isPlaying.value = false;
-  showControls();
-};
-
-const onLoadedMetadata = () => {
-  duration.value = videoRef.value.duration;
-};
-
-const onTimeUpdate = () => {
-  currentTime.value = videoRef.value.currentTime;
-  updateProgressBar();
-};
-
-const onScreenChange = () => {
-  isVideoPlayerFullscreen.value =
-    document.fullscreenElement === videoPlayerRef.value;
-};
-
 function addVideoEventListeners() {
-  videoRef.value.addEventListener("play", onPlayVideo);
-  videoRef.value.addEventListener("pause", onPauseVideo);
-  videoRef.value.addEventListener("loadedmetadata", onLoadedMetadata);
-  videoRef.value.addEventListener("timeupdate", onTimeUpdate);
+  videoElementRef.value.addEventListener("play", onPlayVideo);
+  videoElementRef.value.addEventListener("pause", onPauseVideo);
+  videoElementRef.value.addEventListener("loadedmetadata", onLoadedMetadata);
+  videoElementRef.value.addEventListener("timeupdate", onTimeUpdate);
 }
 
 function removeVideoEventListeners() {
-  videoRef.value.removeEventListener("play", onPlayVideo);
-  videoRef.value.removeEventListener("pause", onPauseVideo);
-  videoRef.value.removeEventListener("loadedmetadata", onLoadedMetadata);
-  videoRef.value.removeEventListener("timeupdate", onTimeUpdate);
+  videoElementRef.value.removeEventListener("play", onPlayVideo);
+  videoElementRef.value.removeEventListener("pause", onPauseVideo);
+  videoElementRef.value.removeEventListener("loadedmetadata", onLoadedMetadata);
+  videoElementRef.value.removeEventListener("timeupdate", onTimeUpdate);
 }
 
 watch(
@@ -341,7 +341,7 @@ watch(
   async (newVal) => {
     if (newVal) {
       await nextTick();
-      if (videoRef.value) {
+      if (videoElementRef.value) {
         removeVideoEventListeners(); // если изменится data, но компонент не будет размонтирован
         addVideoEventListeners();
       }
@@ -356,7 +356,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   document.removeEventListener("fullscreenchange", onScreenChange);
-  if (videoRef.value) {
+  if (videoElementRef.value) {
     removeVideoEventListeners();
   }
 });
