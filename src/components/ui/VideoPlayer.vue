@@ -98,7 +98,7 @@
                   :aria-valuenow="currentTime"
                   aria-valuemin="0"
                   :aria-valuemax="totalVideoDuration"
-                  @input="onPlaybackTimeInput"
+                  @input="updateVideoCurrentTime"
                 />
                 <div
                   class="video-player__progress-value"
@@ -193,45 +193,74 @@ const props = defineProps({
 // video element
 const videoElementRef = ref(null);
 
-// metadata settings
-const onLoadedMetadata = () => {
-  totalVideoDuration.value = videoElementRef.value.duration;
-};
-
 // play/pause settings
 const isPlaying = ref(false);
 
 function togglePlayback() {
-  videoElementRef.value.paused ? videoElementRef.value.play() : videoElementRef.value.pause();
+  videoElementRef.value.paused
+    ? videoElementRef.value.play()
+    : videoElementRef.value.pause();
 }
 
 const onPlayVideo = () => {
   isPlaying.value = true;
+  animateProgress(Date.now())();
 };
 
 const onPauseVideo = () => {
   isPlaying.value = false;
+  cancelAnimationFrame(animationFrameId);
   showControls();
 };
 
-// time update
+// progress & timing
 const totalVideoDuration = ref(0);
 const currentTime = ref(0);
+const visualProgress = ref(0);
 const progressValueRef = ref(null);
+let animationFrameId = null;
 
-function onPlaybackTimeInput(evt) {
+const onLoadedMetadata = () => {
+  totalVideoDuration.value = videoElementRef.value.duration;
+};
+
+const updateVideoCurrentTime = (evt) => {
   videoElementRef.value.currentTime = evt.target.value;
-}
+};
 
-const onTimeUpdate = () => {
-  currentTime.value = videoElementRef.value.currentTime;
-  updateProgressBar();
+const syncTimeStatus = () => {
+  currentTime.value = videoElementRef?.value.currentTime;
+  visualProgress.value = currentTime.value;
 };
 
 const updateProgressBar = () => {
+  if (!progressValueRef.value || !totalVideoDuration.value) return;
+
   progressValueRef.value.style.width = `${
-    (currentTime.value / totalVideoDuration.value) * 100
+    (visualProgress.value / totalVideoDuration.value) * 100
   }%`;
+};
+
+const animateProgress = (startTime) => {
+  if (!isPlaying.value || !videoElementRef.value) {
+    cancelAnimationFrame(animationFrameId);
+    return;
+  }
+
+  return function frame() {
+    let now = Date.now();
+    let delta = now - startTime;
+    visualProgress.value += delta / 1000;
+    updateProgressBar();
+    startTime = now;
+
+    animationFrameId = requestAnimationFrame(animateProgress(startTime));
+  };
+};
+
+const onTimeUpdate = () => {
+  syncTimeStatus();
+  updateProgressBar();
 };
 
 // function handleSeekStart(evt) {
@@ -356,7 +385,13 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId);
+  }
+  clearTimeout(controlsTimer);
+
   document.removeEventListener("fullscreenchange", onScreenChange);
+
   if (videoElementRef.value) {
     removeVideoEventListeners();
   }
@@ -514,6 +549,7 @@ onBeforeUnmount(() => {
   &__progress-value {
     height: 100%;
     max-width: 100%;
+    width: 0;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.6);
     position: relative;
