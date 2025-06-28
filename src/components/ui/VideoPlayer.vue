@@ -204,12 +204,12 @@ function togglePlayback() {
 
 const onPlayVideo = () => {
   isPlaying.value = true;
-  animateProgress(Date.now())();
+  startProgressAnimation();
 };
 
 const onPauseVideo = () => {
   isPlaying.value = false;
-  cancelAnimationFrame(animationFrameId);
+  stopProgressAnimation();
   showControls();
 };
 
@@ -243,19 +243,37 @@ const updateProgressBar = () => {
 
 const animateProgress = (startTime) => {
   if (!isPlaying.value || !videoElementRef.value) {
-    cancelAnimationFrame(animationFrameId);
+    stopProgressAnimation();
     return;
   }
 
-  return function frame() {
+  function frame() {
+    if (!isPlaying.value || !videoElementRef.value) {
+      stopProgressAnimation();
+      return;
+    }
+    
     let now = Date.now();
     let delta = now - startTime;
     visualProgress.value += delta / 1000;
     updateProgressBar();
     startTime = now;
 
-    animationFrameId = requestAnimationFrame(animateProgress(startTime));
-  };
+    animationFrameId = requestAnimationFrame(frame);
+  }
+  frame();
+};
+
+const startProgressAnimation = () => {
+  let startTime = Date.now();
+  animateProgress(startTime);
+};
+
+const stopProgressAnimation = () => {
+  if (animationFrameId !== null) {
+    cancelAnimationFrame(animationFrameId);
+    animationFrameId = null;
+  }
 };
 
 const onTimeUpdate = () => {
@@ -385,13 +403,9 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-  if (animationFrameId) {
-    cancelAnimationFrame(animationFrameId);
-  }
+  stopProgressAnimation();
   clearTimeout(controlsTimer);
-
   document.removeEventListener("fullscreenchange", onScreenChange);
-
   if (videoElementRef.value) {
     removeVideoEventListeners();
   }
