@@ -236,9 +236,9 @@ const syncTimeStatus = () => {
 const updateProgressBar = () => {
   if (!progressValueRef.value || !totalVideoDuration.value) return;
 
-  progressValueRef.value.style.width = `${
-    (visualProgress.value / totalVideoDuration.value) * 100
-  }%`;
+  const progress = Math.min(visualProgress.value / totalVideoDuration.value, 1);
+  const offset = (progress - 1) * 100;
+  progressValueRef.value.style.transform = `translateX(${offset}%)`;
 };
 
 const animateProgress = (startTime) => {
@@ -252,7 +252,7 @@ const animateProgress = (startTime) => {
       stopProgressAnimation();
       return;
     }
-    
+
     let now = Date.now();
     let delta = now - startTime;
     visualProgress.value += delta / 1000;
@@ -551,9 +551,12 @@ onBeforeUnmount(() => {
     height: 8px;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.3);
+    padding-left: $progressValuePadding;
+    padding-right: $progressValuePadding;
     flex-grow: 1;
     touch-action: none;
     position: relative;
+    overflow: hidden;
 
     &:focus-visible {
       outline: 2px solid red; //временные стили для управления с клавиатуры
@@ -561,23 +564,32 @@ onBeforeUnmount(() => {
   }
 
   &__progress-value {
+    width: 100%;
     height: 100%;
     max-width: 100%;
-    width: 0;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.6);
+    transform: translateX(-100%);
+    background: $progressValueBackground;
     position: relative;
+    will-change: transform;
 
     &::before {
       @include pseudo;
-      position: absolute;
+      top: 0;
+      left: -$progressValuePadding;
+      width: $progressValuePadding;
+      height: 100%;
+      background: $progressValueBackground;
+    }
+
+    &::after {
+      @include pseudo;
       top: 50%;
       transform: translateY(-50%);
-      right: -4px;
-      width: 8px;
-      height: 8px;
+      right: -$progressValuePadding;
+      width: calc(2 * $progressValuePadding);
+      height: calc(2 * $progressValuePadding);
       background-color: $color-white;
-      border-radius: 4px;
+      border-radius: 50%;
     }
   }
 
