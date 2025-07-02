@@ -2,6 +2,10 @@ body.locked {
   overflow: hidden;
 }
 
+*:focus-visible {
+  outline: thin double #ffffff;
+}
+
 // *,
 // *::before,
 // *::after {

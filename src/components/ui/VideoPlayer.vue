@@ -9,18 +9,17 @@
       class="video-player__container"
       @mouseenter="handleControls"
       @mousemove="handleControls"
-      @touchstart="handleControls"
       @mouseleave="hideControls(controlsFadeOnLeave)"
     >
       <video
         class="video-player__video"
         :aria-label="videoData.description"
         preload="metadata"
-        tabindex="0"
         :poster="videoData.poster"
         @keydown="handleKeydown"
         ref="videoElementRef"
         @click="togglePlayback"
+        tabindex="0"
       >
         <source :src="videoData.source" type="video/mp4" />
       </video>
@@ -205,6 +204,8 @@ function togglePlayback() {
 const onPlayVideo = () => {
   isPlaying.value = true;
   startProgressAnimation();
+  if (currentTime.value == totalVideoDuration.value) currentTime.value = 0;
+  handleControls();
 };
 
 const onPauseVideo = () => {
@@ -368,6 +369,34 @@ function hideControls(fadeDuration) {
     isShowControls.value = false;
   }, fadeDuration);
 }
+// keyboard events
+function handleKeydown(event) {
+  const video = videoElementRef.value;
+  switch (event.key) {
+    case " ":
+    case "Enter":
+      event.preventDefault();
+      togglePlayback();
+      break;
+    case "ArrowRight":
+      video.currentTime = Math.min(video.duration, video.currentTime + 5);
+      break;
+    case "ArrowLeft":
+      video.currentTime = Math.max(0, video.currentTime - 5);
+      break;
+    case "f":
+    case "F":
+      toggleFullscreen();
+      break;
+    case "Escape":
+      if (isVideoPlayerFullscreen.value) {
+        document.exitFullscreen();
+      }
+      break;
+    default:
+      break;
+  }
+}
 
 //  listeners
 function addVideoEventListeners() {
@@ -414,8 +443,6 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .video-player {
-  border-radius: 12px;
-  overflow: hidden;
   display: flex;
   align-items: center;
 
@@ -424,16 +451,12 @@ onBeforeUnmount(() => {
     width: 100%;
     max-height: 100%;
     aspect-ratio: 16 / 9;
-
-    // &:focus-visible {
-    // outline: 2px solid red; временные стили для управления с клавиатуры
-    // }
   }
 
   &__video {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    border-radius: 12px;
   }
 
   &__controls {
@@ -474,14 +497,6 @@ onBeforeUnmount(() => {
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: auto;
-
-    // &:hover {
-    // transform: translate(-50%, -50%) scale(1.1); переместить в десктоп
-    // }
-
-    &:focus-visible {
-      outline: 2px solid red; //временные стили для управления с клавиатуры
-    }
   }
 
   &__pause-icon,
@@ -557,10 +572,6 @@ onBeforeUnmount(() => {
     touch-action: none;
     position: relative;
     overflow: hidden;
-
-    &:focus-visible {
-      outline: 2px solid red; //временные стили для управления с клавиатуры
-    }
   }
 
   &__progress-value {
