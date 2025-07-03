@@ -1,0 +1,62 @@
+[
+  {
+    "author": "Emily Carter",
+    "position": "CTO, NexTech",
+    "quote": "The team at VRNas delivered beyond our expectations. Their expertise in VR solutions is unmatched, and they were incredibly responsive throughout the project. Highly recommended!",
+    "id": 0,
+    "image": {
+      "src": "emily.png",
+      "description": "Emily Carter in VR headset during product testing"
+    }
+  },
+  {
+    "author": "Michael Tran",
+    "position": "Founder, VirtuSphere",
+    "quote": "Working with VRNas was a game-changer for our project. Their professionalism and attention to detail made the entire process smooth and efficient. Will definitely collaborate again!",
+    "id": 1,
+    "image": {
+      "src": "michael.png",
+      "description": "Michael Tran presenting at tech conference"
+    }
+  },
+  {
+    "author": "Sophia Reynolds",
+    "position": "Director, AR/VR Labs",
+    "quote": "VRNas provided exceptional VR development services. Their team was creative, skilled, and always available to address our needs. A truly outstanding experience!",
+    "id": 2,
+    "image": {
+      "src": "sophia.png",
+      "description": "Sophia Reynolds demonstrating VR interface"
+    }
+  },
+  {
+    "author": "David Kim",
+    "position": "CEO, MetaForge",
+    "quote": "From concept to execution, VRNas exceeded every benchmark. Their solutions are innovative, and their team is a pleasure to work with. 10/10 would recommend!",
+    "id": 3,
+    "image": {
+      "src": "david.png",
+      "description": "David Kim in office with VR equipment"
+    }
+  },
+  {
+    "author": "James Peterson",
+    "position": "Head of Innovation, FutureScape",
+    "quote": "VRNas is a top-tier VR partner. Their team is knowledgeable, efficient, and always willing to go the extra mile. Our project was completed flawlessly and on time.",
+    "id": 5,
+    "image": {
+      "src": "james.png",
+      "description": "James Peterson testing haptic feedback gloves"
+    }
+  },
+  {
+    "author": "Natalie Brooks",
+    "position": "VP of Development, Visionary Tech",
+    "quote": "Choosing VRNas was the best decision for our VR project. Their professionalism, creativity, and dedication made the collaboration seamless and highly productive.",
+    "id": 6,
+    "image": {
+      "src": "natalie.png",
+      "description": "Natalie Brooks leading team brainstorming session"
+    }
+  }
+]

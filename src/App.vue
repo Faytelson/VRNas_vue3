@@ -5,6 +5,8 @@
     <main class="main">
       <Breadcrumbs></Breadcrumbs>
 
+      <TooltipList :tooltipListData="tooltipListData"></TooltipList>
+
       <AccordionInfoBlock
         :image="accordionChooseUsImage"
         :accordionData="accordionChooseUs"
@@ -18,6 +20,7 @@
 
       <div class="main__container">
         <VideoPlayer :videoData="videoData"></VideoPlayer>
+
         <CountBadge title="Happy Clients" subtitle="32k+"></CountBadge>
 
         <Title tag="h1" :styles="['main']">
@@ -61,11 +64,11 @@
           type="bordered"
         ></Accordion>
 
-        <FeatureList></FeatureList>
+        <FeatureList />
 
-        <NavigationListPanel></NavigationListPanel>
+        <NavigationListPanel />
 
-        <IconList></IconList>
+        <IconList />
       </div>
     </main>
 
@@ -90,6 +93,7 @@ import CountBadge from "@/components/ui/CountBadge.vue";
 import AccordionInfoBlock from "@/components/AccordionInfoBlock.vue";
 import VideoPlayer from "./components/ui/VideoPlayer.vue";
 import myVideo from "@/assets/videos/video-girl-vr.mp4";
+import TooltipList from "./components/lists/TooltipList.vue";
 
 const navigationStore = useNavigationStore();
 const isMenuActive = computed(() => navigationStore.isMenuActive);
@@ -115,6 +119,7 @@ const accordionChooseUs2Image = {
 };
 
 const accordionChooseUs = ref([]);
+
 async function fetchAccordionChooseUs() {
   const response = await fetch("/mock-data/accordion_chooseUs.json");
   const data = await response.json();
@@ -131,9 +136,19 @@ async function fetchVideoData() {
   videoData.value = data;
 }
 
+// tooltip list
+const tooltipListData = ref([]);
+
+async function fetchTooltipListData() {
+  const response = await fetch("/mock-data/tooltipList.json");
+  const data = await response.json();
+  tooltipListData.value = data;
+}
+
 onMounted(() => {
   fetchAccordionChooseUs();
   fetchVideoData();
+  fetchTooltipListData();
 });
 </script>
 
